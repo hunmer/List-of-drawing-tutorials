@@ -1,0 +1,72 @@
+nav {
+background: #43cea2;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #185a9d, #43cea2);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #185a9d, #43cea2);
+}
+
+nav i{
+    color: #d8efec !important;
+}
+
+.preloader-wrapper {
+    left: 45%;
+    margin-top: 65px
+}
+
+.mr {
+    margin-right: 15px;
+}
+
+.block {
+    display: block;
+}
+
+.nowarp {
+    white-space: nowrap;
+}
+
+.card .card-title {
+    font-size: 13px !important;
+    padding: 35px !important;
+}
+
+.logo {
+    color: #d8efec !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 20px !important;
+    width: 75%;
+}
+
+.search_active {
+    border: 3px solid red;
+}
+
+.sidenav {
+    width: 260px !important;
+}
+
+#slide-out {
+    padding: 20px;
+}
+
+.collection .collection-item.avatar {
+    padding-left: 10px;
+}
+
+.collection .collection-item .title {
+    margin-left: 20px;
+    position: absolute;
+    margin-top: 20px;
+    display: inline;
+}
+
+.bt-content span {
+    display: block;
+    text-align: center;
+}
+
+._id {
+    width: calc(100% - 200px);
+}

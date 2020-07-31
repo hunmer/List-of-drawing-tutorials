@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <link href="font/icon.css" rel="stylesheet">
+  <meta charset="utf-8">
+  <link type="text/css" rel="stylesheet" href="css/materialize.css"  media="screen,projection"/>
+  <link type="text/css" rel="stylesheet" href="css/custom.css"  media="screen,projection"/>
+  <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="css/basictable.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta http-equiv="Content-Security-Policy" content="block-all-mixed-content">
+  <title>List of drawing tutorials</title>
+</head> 
+<style type="text/css">
+    img {
+    width: 90px;
+    height: 120px;
+    }
+</style>
+<body>
+   
+   <div class="navbar-fixed">
+    <nav class="nav-extended">
+    <div class="nav-wrapper">
+      <a href="javascript:$('.sidenav').sidenav('open');" class="brand-logo logo">List of drawing tutorials(1377)</a>
+      <a href="javascript:void(0)" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+      <a href="javascript:void(0)" onclick="openSearch();" class="right mr"><i class="material-icons">search</i></a>
+      <!-- <a href="javascript:void(0)" onclick="openComment();" class="right mr"><i class="material-icons">comment</i></a> -->
+    </div>
+    <div class="nav-content">
+      <ul class="tabs tabs-transparent">
+        <li class="tab"><a class="active" href="#test1">List</a></li>
+        <li class="tab"><a href="#test2">Favorite</a></li>
+      </ul>
+    </div>
+
+  </nav>
+</div>
+
+  <!-- 搜索界面 -->
+    <nav id='search' style="display: none;height: 58px;background-color: white;">
+    <div class="nav-wrapper">
+      <form style="margin-bottom: 0px !important;height: 8%">
+        <div class="input-field">
+          <input id="search" type="search" oninput='searchByKeyword();' required style="height: 58px;">
+          <label class="label-icon" for="search"><i class="material-icons">search</i></label>
+          <i class="material-icons" onclick="closeSearch();">close</i>
+        </div>
+      </form>
+      <ul class="collection" style="margin-top: 60px !important;border: 0px !important;">
+     </ul>
+    </div>
+  </nav>
+<!-- 侧边栏开始 -->  
+  <ul id="slide-out" class="sidenav">
+    <li><a href="javascript: alert('TODO');"><i class="material-icons">bookmark</i>Bookmark</a></li>
+    <li><a href="javascript: $('.sidenav').sidenav('close');$('#modal1').modal('open');"><i class="material-icons">email</i>Suggest</a></li>
+    <li><a target="_blank" href="https://github.com/hunmer/hunmer.github.io/tree/master/drawbooks"><i class="material-icons">code</i>Code</a></li>
+    
+  <ul class="collapsible">
+    <li>
+      <div class="collapsible-header"><i class="material-icons">link</i>Links</div>
+      <div class="collapsible-body">
+        <a target="_blank" href="https://vk.com/topic-4918594_27696136?offset=0" style="text-align: center;" class='block'>Bykodorova Katerina(5700pdf+)</a>
+
+      </div>
+    </li>
+   
+  </ul>
+
+  </ul>
+<!-- 侧边栏结束 -->
+
+  <!-- Modal Structure -->
+  <div id="modal1" class="modal">
+    <div class="modal-content">
+      <h4>Suggest</h4>
+      <p id='Suggest_tip' style="color: red;"></p>
+       <div class="row">
+            <form>
+              <div class="row">
+                <div class="input-field">
+                  <i class="material-icons prefix">title</i>
+                  <textarea id="icon_prefix2" class="materialize-textarea"></textarea>
+                  <label for="icon_prefix2">Title</label>
+                  <span class="helper-text" data-error="wrong" data-success="right"></span>
+                </div>
+                <div class="input-field">
+                  <i class="material-icons prefix">message</i>
+                  <textarea id="icon_prefix2" class="materialize-textarea"></textarea>
+                  <label for="icon_prefix2">Text</label>
+                  <span class="helper-text" data-error="wrong" data-success="right"></span>
+                </div>
+              </div>
+            </form>
+          </div>
+            <div class="progress" style="display: none;">
+                  <div class="indeterminate"></div>
+           </div>
+    </div>
+    <div class="modal-footer">
+      <a href="#!" class="waves-effect waves-green btn-flat" onclick="submitMessage();">Send</a>
+    </div>
+  </div>
+
+  <!-- 自定义弹出 -->
+  <div id="modal2" class="modal">
+    
+  </div>
+
+   <div id="modal_comment" class="modal modal-fixed-footer">
+   </div>
+
+  <div class='_content' id="test1" class="col s12">
+ <div class="preloader-wrapper big active">
+    <div class="spinner-layer spinner-blue-only">
+      <div class="circle-clipper left">
+        <div class="circle"></div>
+      </div><div class="gap-patch">
+        <div class="circle"></div>
+      </div><div class="circle-clipper right">
+        <div class="circle"></div>
+      </div>
+    </div>
+  </div>
+ <table id="table-two-axis" class="two-axis" style="display: none; margin-top: 50px;">
+            <thead>
+              <tr>
+                <th>Book</th>
+                <th></th>
+                <th>Lang</th>
+                <th>Size</th>
+                <th>Action</th>
+                <th>Backup</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+          </tbody>
+      </table>
+  </div>
+    <div class='_content' id="test2" class="col s12">
+
+    <div class="row" style="margin: 3px;">
+    </div>
+
+  </div>
+
+	<script src="js/jquery.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="js/lazyload.min.js"></script>
+    <script type="text/javascript" src="js/jquery.basictable.js"></script>
+    <script type="text/javascript" src="js/materialize.min.js"></script>
+
+	<script>
+     function getGETArray(){
+        var a_result = [], a_exp;
+        var a_params = window.location.search.slice(1).split('&');
+        for(var k in a_params){
+            a_exp = a_params[k].split('=');
+            if(a_exp.length > 1){
+                a_result[a_exp[0]] = a_exp[1];
+            } 
+        }
+        return a_result;
+    }
+
+     function submitMessage(){
+        if($('textarea')[0].value == ''){
+            $($('.helper-text')[0]).html('empty title').css({'color': 'red', 'display': ''});
+            return;
+        }
+        $($('.helper-text')[0]).hide();
+         if($('textarea')[1].value == ''){
+            $($('.helper-text')[1]).html('empty text').css({'color': 'red', 'display': ''});
+            return;
+        }
+         $($('.helper-text')[1]).hide();
+         $('.progress').show();
+
+         $.post('https://neysummer2000-location.glitch.me/report.php', {title: $('textarea')[0].value, message: $('textarea')[1].value}, function(data, textStatus, xhr) {
+            if(textStatus == 'success' && data == 'success'){
+                M.toast({html: 'Send Success!'});
+                $('#modal1').modal('close');
+            }else{
+                alert('Failed To Send!')
+            }
+         }).always(function(){
+            $('.progress').hide();
+         });
+    }
+        var g_s_search = '';
+        var g_search = [];
+         var g_datas = [];
+        var a_get = getGETArray();
+        if(a_get['lang'] == undefined){
+            a_get['lang'] = 'ALL';
+        }
+        $(function(){
+           M.AutoInit();
+            $('textarea').characterCounter();
+
+             if(window.location.protocol == 'file:'){
+                var D = document;
+                var scriptNode = D.createElement ('script');
+                scriptNode.type = "text/javascript";
+                scriptNode.src = './js/drawbooks.js';
+                var targ = D.getElementsByTagName ('head')[0] || D.body || D.documentElement;
+                 scriptNode.textContent  = '(alert(1))()';
+                targ.appendChild (scriptNode);
+                scriptNode.onload = function() {
+                  parseData();
+                }
+             }else{
+                 $.getJSON('./js/drawbooks.json', function(json, textStatus) {
+                    g_datas = json;
+                    parseData();
+                });
+             }
+            $(document).on('click', 'img', function(){
+                var d = $(this).parent().parent().parent().find('a.read');
+                if(d.length > 0) d[0].click();
+            })
+            .on('click', '.collection-item', function() {
+                closeSearch();
+                toItem($(this).attr('key'))
+            })
+            .on('click', 'tr', function() {
+                if($(this).hasClass('search_active')){
+                    $(this).removeClass('search_active');
+                }
+                
+            }).
+            on('click', 'th, td:lt(5)', function(){
+                var type;
+                if(this.nodeName == 'TD'){
+                    type = $(this).attr('data-th');
+                }else{
+                    type = this.innerHTML;
+                }
+                switch(type){
+                    case 'Lang':
+                          var h = `
+                            <div class="modal-content">
+                              <h4>Lang</h4>
+                               <div class="row">
+                                    <form>
+                                      <div class="row">
+                                      `;
+                          var b;
+                          for(var lang of ['ALL', 'ENGLISH', 'CHINESE', 'JAPANESE']){
+                            b = lang == a_get['lang'];
+                            h = h + `<p>
+                                      <label>
+                                        <input onclick="setLang('`+lang+`');" type="checkbox"`+(b?' checked="checked":':'')+`/>
+                                        <span>`+lang+`</span>
+                                      </label>
+                                    </p>`;
+                          }
+                          h = h + '</div></form></div></div>';
+                          $('#modal2').html(h).modal('open');
+                        break;
+
+                    case 'ID':
+
+                    break;
+                }
+            });
+        });
+
+        function openNew(url){
+            if(window.newW != undefined) window.newW.close();
+            window.newW = window.open(url, 'newwindow', 'height=1000, width=720, top=1000,left=100, toolbar=no, menubar=no, scrollbars=no, resizable=no,location=no,status=no');
+
+        }
+
+    function parseData(){
+        //$('tr:gt(1)').remove();
+        var h = `<tr>
+                <td></td>
+                <td></td>
+                <td>
+                    <select id='#lang_select'>
+                      <option value="" disabled selected>ALL</option>
+                      <option value="1">ENGLISH</option>
+                      <option value="2">JAPANESE</option>
+                      <option value="3">CHINESE</option>
+                    </select>
+                </td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>`;
+        var id = 0;
+        for(var d of g_datas){
+            if(a_get['lang'] != 'ALL' && d.lang != a_get['lang']) continue;
+            id++;
+
+             h = h +  `<tr>
+             <td><span class='_id'>`+id+`</span><img data-src="`+d.img+`" class='lazyload'></td>
+                <td><a target="_blank" href="https://www.google.com/search?q=`+d.title+`">`+d.title+`</a></td>
+                
+                <td>`+d.lang+`</td>`;
+
+             if(d.online != undefined){
+                h = h +  `<td>`+formatFileSize(d.online.size)+`</td>`;
+                h = h +  `<td class='_action'><a class='read' href="javascript:openNew('https://neysummer2000-location.glitch.me/?id=`+d.online.id+`&title=`+ encodeURI(d.title)+`')">readOnline</a>&nbsp;&nbsp;&nbsp;<a target="_blank" href="http://pan-yz.chaoxing.com/download/downloadfile?fleid=`+d.online.id+`&puid=142588570">directDownload</a></td>`;
+            }else{
+                 h = h +  `<td></td><td></td>`;
+            }
+
+             h = h + '<td>';
+            for(var i=0;i<d.link.length;i++){
+                if(d.link[i].indexOf('提取码') === -1){
+                 h = h + '<a target="_blank" href="'+d.link[i]+'">'+(i+1)+'.download</a>';
+                }else{
+                 h = h + d.link[i];
+                }
+                h = h + '     ';
+            }
+           
+            h = h + '</td></tr>';
+        }
+        $('.preloader-wrapper').hide();
+        $('tbody').html(h);
+        $('select').val(a_get['lang']);
+        $(".lazyload").lazyload({effect: "fadeIn"});
+        $('#table-two-axis').show().basictable();
+    }
+    
+    function formatFileSize(fileSize) {
+    if (fileSize < 1024) {
+        return fileSize + 'B';
+    } else if (fileSize < (1024*1024)) {
+        var temp = fileSize / 1024;
+        temp = temp.toFixed(2);
+        return temp + 'KB';
+    } else if (fileSize < (1024*1024*1024)) {
+        var temp = fileSize / (1024*1024);
+        temp = temp.toFixed(2);
+        return temp + 'MB';
+    } else {
+        var temp = fileSize / (1024*1024*1024);
+        temp = temp.toFixed(2);
+        return temp + 'GB';
+    }
+}
+
+
+    </script>
+    <script type="text/javascript">
+      function openComment(){
+         /*var h = `<div class="modal-content">
+                <h4>Loading Comments...</h4>
+                 <div class="progress">
+                    <div class="indeterminate"></div>
+                </div>
+                 <div class="row">
+                 <form>
+
+                 </form></div><div class="modal-footer">
+          <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
+          </div></div>`;
+            $('#modal_comment').html(h).modal('open');
+
+            setTimeout(function(){
+              var data = [
+              {
+                  message: 'a',
+                  date: '2020年7月31日 23点24分'
+                }
+              ];
+
+              h = '<ul class="collection">';
+              for(var d of data){
+
+                h = h + `<li class="collection-item avatar">
+                  <img src="images/yuna.jpg" alt="" class="circle">
+                  <span class="title">Title</span>
+                  <p>First Line <br>
+                     Second Line
+                  </p>
+                  <a href="#!" class="secondary-content"><i class="material-icons">reply</i></a>
+                </li>`;
+                
+              }
+              $('#modal_comment').find('.progress').hide().
+                 find('h4').html('Comments').
+                 find('.row').append($(h+'</ul>'));
+            }, 2000);*/
+            
+      }
+
+        function setLang(lang){
+            window.location.href = './index.html?lang='+lang;
+        }
+
+        function openSearch(){
+              $('#search .collection').html('');
+              $('.navbar-fixed').hide();
+              $('#search').show().focus();
+              setTimeout(function() {$('._content').hide();$('#search input').focus(); }, 100);
+        }
+
+        function closeSearch(){
+              $('.navbar-fixed').show();
+              $('#search').hide();
+              $('input#search').val('');
+              $('div._content.active').show();
+              $('#search .collection').html('');
+
+        }
+
+        function searchByKeyword(){
+           var s = $('#search input').val();
+           var html = '';
+           if(s != ''){
+              var c = 1;
+              for(var json of g_datas){
+                c++;
+                var i_s = json.title.indexOf(s);
+                if(i_s !== -1){
+                  html = html + `<li class="collection-item avatar z-depth-2 waves-effect block" style='width: 100%;color: black;' key='`+c+`'>
+                    <img data-src="`+json.img+`" class="lazyload">
+                    <div class="title">`+json.title.replace(s, '<span style="color: red">'+s+'</span>')+`</div>
+                    <br>`+(json.online != undefined ? '<div class="chip">'+formatFileSize(json.online.size)+`</div>`:'')+`<div class="chip `+getColorByLang(json.lang)+` white-text">`+json.lang+`</div>
+                    </p></li>`;
+                }
+              }
+           }
+            $('#search .collection').html(html);
+            $(".lazyload").lazyload({effect: "fadeIn"});
+        }
+
+        function getColorByLang(lang){
+            if(lang == 'JAPANESE'){
+                return 'green';
+            }else
+            if(lang == 'CHINESE'){
+                return 'red';
+            }else{
+                return 'blue';
+            }
+        }
+
+         function toItem(index){
+            $('.search_active').removeClass('search_active');
+            $(document).scrollTop($('#table-two-axis tr:eq('+index+')').addClass('search_active').offset().top - $(this).height() / 2);
+        }
+    </script>
+</body>
+</html>
