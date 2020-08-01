@@ -207,7 +207,7 @@
             $('textarea').characterCounter();
 
             if(a_get['s'] != undefined){
-            	openSearch();
+            	openSearch(false);
         		$('input#search').val(a_get['s']);
             }
 
@@ -339,6 +339,7 @@
         $('#table-two-axis').show().basictable();
 
          if(a_get['s'] != undefined){
+            $('._content').hide();
     		searchByKeyword();
         }
     }
@@ -409,16 +410,15 @@
         function setLang(lang){
             window.location.href = './index.html?lang='+lang;
         }
-
-
     	
-        // 
-        function openSearch(){
+        function openSearch(hide = true){
               //$('#search .collection').html('');
               $('.navbar-fixed').hide();
               $('#search').show().focus();
               setTimeout(function() {
-              	$('._content').hide();
+              	if(hide){
+              		$('._content').hide();
+              	}
               	$('#search input').focus(); }, 100);
         }
 
@@ -436,18 +436,23 @@
            var s = $('#search input').val();
            var html = '';
            if(s != ''){
-              var c = 1;
+              var k = 1;
+              var c = 0;
               for(var json of g_datas){
-                c++;
+                k++;
                 var i_s = json.title.indexOf(s);
                 if(i_s !== -1){
-                  html = html + `<li class="collection-item avatar z-depth-2 waves-effect block" style='width: 100%;color: black;' key='`+c+`'>
+                	c++;
+                  html = html + `<li class="collection-item avatar z-depth-2 waves-effect block" style='width: 100%;color: black;' key='`+k+`'>
                     <img data-src="`+json.img+`" class="lazyload">
                     <div class="title">`+json.title.replace(s, '<span style="color: red">'+s+'</span>')+`</div>
                     <br>`+(json.online != undefined ? '<div class="chip">'+formatFileSize(json.online.size)+`</div>`:'')+`<div class="chip `+getColorByLang(json.lang)+` white-text">`+json.lang+`</div>
                     </p></li>`;
                 }
               }
+           }
+           if(c==0){
+           		 html = html + '<h1 style="display: block; text-align: center">Nothing Found...</h1>';
            }
             $('#search .collection').html(html);
             $(".lazyload").lazyload({effect: "fadeIn"});
