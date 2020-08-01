@@ -44,7 +44,7 @@
         <div class="input-field">
           <input id="search" type="search" oninput='searchByKeyword();' required style="height: 58px;">
           <label class="label-icon" for="search"><i class="material-icons">search</i></label>
-          <i class="material-icons" onclick="closeSearch();">close</i>
+          <i class="material-icons" onclick="closeSearch(true);">close</i>
         </div>
       </form>
       <ul class="collection" style="margin-top: 60px !important;border: 0px !important;">
@@ -165,7 +165,7 @@
         for(var k in a_params){
             a_exp = a_params[k].split('=');
             if(a_exp.length > 1){
-                a_result[a_exp[0]] = a_exp[1];
+                a_result[a_exp[0]] = decodeURIComponent(a_exp[1]);
             } 
         }
         return a_result;
@@ -206,6 +206,11 @@
            M.AutoInit();
             $('textarea').characterCounter();
 
+            if(a_get['s'] != undefined){
+            	openSearch();
+        		$('input#search').val(a_get['s']);
+            }
+
              if(window.location.protocol == 'file:'){
                 var D = document;
                 var scriptNode = D.createElement ('script');
@@ -228,7 +233,7 @@
                 if(d.length > 0) d[0].click();
             })
             .on('click', '.collection-item', function() {
-                closeSearch();
+                closeSearch(false);
                 toItem($(this).attr('key'))
             })
             .on('click', 'tr', function() {
@@ -332,6 +337,10 @@
         $('select').val(a_get['lang']);
         $(".lazyload").lazyload({effect: "fadeIn"});
         $('#table-two-axis').show().basictable();
+
+         if(a_get['s'] != undefined){
+    		searchByKeyword();
+        }
     }
     
     function formatFileSize(fileSize) {
@@ -401,20 +410,26 @@
             window.location.href = './index.html?lang='+lang;
         }
 
+
+    	
+        // 
         function openSearch(){
-              $('#search .collection').html('');
+              //$('#search .collection').html('');
               $('.navbar-fixed').hide();
               $('#search').show().focus();
-              setTimeout(function() {$('._content').hide();$('#search input').focus(); }, 100);
+              setTimeout(function() {
+              	$('._content').hide();
+              	$('#search input').focus(); }, 100);
         }
 
-        function closeSearch(){
+        function closeSearch(reset = true){
               $('.navbar-fixed').show();
               $('#search').hide();
-              $('input#search').val('');
+              if(reset){
+              	$('input#search').val('');
+              	$('#search .collection').html('');
+              }
               $('div._content.active').show();
-              $('#search .collection').html('');
-
         }
 
         function searchByKeyword(){
