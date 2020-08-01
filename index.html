@@ -16,6 +16,12 @@
     width: 90px;
     height: 120px;
     }
+    #layout {
+    	position: fixed;
+    	/*background-color: black;*/
+    	width: 100%;
+    	display: none;
+    }
 </style>
 <body>
    
@@ -110,8 +116,8 @@
 
    <div id="modal_comment" class="modal modal-fixed-footer">
    </div>
-
   <div class='_content' id="test1" class="col s12">
+  <div id='layout'></div>
  <div class="preloader-wrapper big active">
     <div class="spinner-layer spinner-blue-only">
       <div class="circle-clipper left">
@@ -417,9 +423,34 @@
               $('#search').show().focus();
               setTimeout(function() {
               	if(hide){
-              		$('._content').hide();
+              		hideContent();
               	}
               	$('#search input').focus(); }, 100);
+        }
+
+        function hideContent(){
+        	$('#layout').css({
+        		display: 'block',
+        		top: $('._content').offset().top,
+        		height: $('._content').height(),
+        		zIndex: 1
+        	});
+        
+           $('._content').css({
+           	 	opacity: 0,
+    			zIndex: -1
+           });
+        }
+
+        function showContent(){
+        	$('#layout').css({
+        		zIndex: 0,
+        		display: 'none'
+        	});
+           $('._content').css({
+           	 	opacity: 1,
+    			zIndex: 0
+           });
         }
 
         function closeSearch(reset = true){
@@ -429,7 +460,7 @@
               	$('input#search').val('');
               	$('#search .collection').html('');
               }
-              $('div._content.active').show();
+              showContent();
         }
 
         function searchByKeyword(){
