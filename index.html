@@ -22,6 +22,17 @@
     	width: 100%;
     	display: none;
     }
+
+    #search_res {
+    	height: 0;
+        display: block;
+	    position: absolute !important;
+	    right: 3px;
+	    margin-top: 18px;
+	    color: red;
+	    font-size: 14px;
+	    z-index: 999;
+    }
 </style>
 <body>
    
@@ -47,6 +58,8 @@
     <nav id='search' style="display: none;height: 58px;background-color: white;">
     <div class="nav-wrapper">
       <form style="margin-bottom: 0px !important;height: 8%" onsubmit="return false;">
+      <span id='search_res'></span>
+
         <div class="input-field">
           <input id="search" type="search" oninput='searchByKeyword();' required style="height: 58px;">
           <label class="label-icon" for="search"><i class="material-icons">search</i></label>
@@ -459,6 +472,7 @@
               if(reset){
               	$('input#search').val('');
               	$('#search .collection').html('');
+              	$('#search_res').html('');
               }
               showContent();
         }
@@ -485,6 +499,7 @@
            if(c==0){
            		 html = html + '<h1 style="display: block; text-align: center">Nothing Found...</h1>';
            }
+           $('#search_res').html(c+' results');
             $('#search .collection').html(html);
             $(".lazyload").lazyload({effect: "fadeIn"});
         }
