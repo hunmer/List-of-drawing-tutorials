@@ -33,6 +33,10 @@
 	    font-size: 14px;
 	    z-index: 999;
     }
+
+    ._id {
+    	margin: 0px auto;
+    }
 </style>
 <body>
    
@@ -433,12 +437,13 @@
         function openSearch(hide = true){
               //$('#search .collection').html('');
               $('.navbar-fixed').hide();
-              $('#search').show().focus();
+              $('#search').show();
+              if(hide){
+	          		hideContent();
+	          	}
               setTimeout(function() {
-              	if(hide){
-              		hideContent();
-              	}
-              	$('#search input').focus(); }, 100);
+              	$('#search input').focus(); // 移动端弹出输入法会造成文档改变大小从而导致卡顿
+              }, 1000);
         }
 
         function hideContent(){
