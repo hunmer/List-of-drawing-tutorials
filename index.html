@@ -697,6 +697,9 @@
                     $('#search_res').html('');
                 }
                 showContent();
+                if(g_page == 0){
+                  loadPage(1, getLocalItem('data-md5') != g_s_md5);
+                }
             }
 
             function toTop() {
