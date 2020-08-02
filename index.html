@@ -9,7 +9,18 @@
     <link rel="stylesheet" type="text/css" href="css/basictable.css" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <meta http-equiv="Content-Security-Policy" content="block-all-mixed-content">
-  <title>List of drawing tutorials</title>
+
+<!-- 强制移动设备以app模式打开页面(即在移动设备下全屏，仅支持部分浏览器) -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-touch-fullscreen" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="full-screen" content="yes"><!--UC强制全屏-->
+<meta name="browsermode" content="application"><!--UC应用模式-->
+<meta name="x5-fullscreen" content="true"><!--QQ强制全屏-->
+<meta name="x5-page-mode" content="app"><!--QQ应用模式-->
+<meta name="description" content="List of drawing tutorials"/>
+<link rel="shortcut icon" href="favicon.svg">
+<title>List of drawing tutorials</title>
 </head> 
 <style type="text/css">
     img {
@@ -51,7 +62,7 @@
     <div class="nav-content">
       <ul class="tabs tabs-transparent">
         <li class="tab"><a class="active" href="#test1">List</a></li>
-        <li class="tab"><a href="#test2">Favorite</a></li>
+        <li class="tab" onclick='initFavorite();'><a href="#test2">Favorite</a></li>
       </ul>
     </div>
 
@@ -70,16 +81,14 @@
           <i class="material-icons" onclick="closeSearch(true);">close</i>
         </div>
       </form>
-      <ul class="collection" style="margin-top: 60px !important;border: 0px !important;">
+      <ul class="collection" style="margin-top: 60px !important;border: 0px !important;z-index: 33">
      </ul>
     </div>
   </nav>
 <!-- 侧边栏开始 -->  
   <ul id="slide-out" class="sidenav">
-    <li><a href="javascript: alert('TODO');"><i class="material-icons">bookmark</i>Bookmark</a></li>
     <li><a href="javascript: $('.sidenav').sidenav('close');$('#modal1').modal('open');"><i class="material-icons">email</i>Suggest</a></li>
     <li><a target="_blank" href="https://github.com/hunmer/List-of-drawing-tutorials"><i class="material-icons">code</i>Code</a></li>
-    
   <ul class="collapsible">
     <li>
       <div class="collapsible-header"><i class="material-icons">link</i>Links</div>
@@ -146,6 +155,7 @@
       </div>
     </div>
   </div>
+  <div id='_table_show'>
  <table id="table-two-axis" class="two-axis" style="display: none; margin-top: 50px;">
             <thead>
               <tr>
@@ -169,19 +179,49 @@
           </tbody>
       </table>
   </div>
-    <div class='_content' id="test2" class="col s12">
-
+      <div id='_page'></div>
+  </div>
+    <div class='_content' id="test2" class="col s12" style="display: none; margin-top: 50px;">
+    <!-- <div class="fixed-action-btn">
+	  <a class="btn-floating btn-large red">
+	    <i class="large material-icons">mode_edit</i>
+	  </a>
+	  <ul>
+	    <li><a class="btn-floating red"><i class="material-icons">input</i></a></li>
+	    <li><a class="btn-floating yellow darken-1"><i class="material-icons">Import</i></a></li>
+	    <li><a class="btn-floating green"><i class="material-icons">delete</i></a></li>
+	    <li><a class="btn-floating blue"><i class="material-icons">exit_to_app</i></a></li>
+	  </ul>
+	</div> -->
     <div class="row" style="margin: 3px;">
     </div>
 
   </div>
 
 	<script src="js/jquery.min.js" type="text/javascript"></script>
+	<script src="js/until.js" type="text/javascript"></script>
+	<script type="text/javascript" src='js/clipboard.min.js'></script>
     <script type="text/javascript" src="js/lazyload.min.js"></script>
     <script type="text/javascript" src="js/jquery.basictable.js"></script>
     <script type="text/javascript" src="js/materialize.min.js"></script>
 
 	<script>
+     var g_s_md5 = 'f92139d21f18c072728f2b2498cc117b';
+     var g_load = 20;
+	var g_s_search = '';
+	var g_search = [];
+	var g_datas = [];
+	var a_get = getGETArray();
+	var g_max = -1;
+
+      window.history.pushState(null, null, "#");
+	   window.addEventListener("popstate", function(event) {
+	      window.history.pushState(null, null, "#");
+	      event.preventDefault(true);
+	      
+	   });
+
+
      function getGETArray(){
         var a_result = [], a_exp;
         var a_params = window.location.search.slice(1).split('&');
@@ -218,23 +258,27 @@
             $('.progress').hide();
          });
     }
-        var g_s_search = '';
-        var g_search = [];
-         var g_datas = [];
-        var a_get = getGETArray();
+       
         if(a_get['lang'] == undefined){
             a_get['lang'] = 'ALL';
         }
         $(function(){
            M.AutoInit();
             $('textarea').characterCounter();
+            //initFavorite();
 
             if(a_get['s'] != undefined){
             	openSearch(false);
         		$('input#search').val(a_get['s']);
             }
 
-             if(window.location.protocol == 'file:'){
+
+            if(localStorage.getItem('data-md5') == g_s_md5){
+            	g_datas = JSON.parse(localStorage.getItem('data'));
+                loadPage(1, false);
+                console.log('cache');
+            }else
+            if(window.location.protocol == 'file:'){
                 var D = document;
                 var scriptNode = D.createElement ('script');
                 scriptNode.type = "text/javascript";
@@ -243,21 +287,22 @@
                  scriptNode.textContent  = '(alert(1))()';
                 targ.appendChild (scriptNode);
                 scriptNode.onload = function() {
-                  parseData();
+                  loadPage(1, true);
                 }
              }else{
                  $.getJSON('./js/drawbooks.json', function(json, textStatus) {
                     g_datas = json;
-                    parseData();
+                    loadPage(1, true);
                 });
              }
+
             $(document).on('click', 'img', function(){
                 var d = $(this).parent().parent().parent().find('a.read');
                 if(d.length > 0) d[0].click();
             })
-            .on('click', '.collection-item', function() {
+            .on('click', '#search .collection-item', function() {
                 closeSearch(false);
-                toItem($(this).attr('key'))
+                toItem($(this))
             })
             .on('click', 'tr', function() {
                 if($(this).hasClass('search_active')){
@@ -265,6 +310,23 @@
                 }
                 
             }).
+            on('click', '.star', function(event) {
+            	favoriteByDom($(this).attr('data-index'), $(this));
+            	event.preventDefault();
+            })
+            .on('click', '.pagination li', function(event) {
+				  var dom = $(this);
+				  var d = dom.find('i');
+				  if(d.length > 0){
+				    if(d[0].innerText == 'chevron_left'){
+				      loadPage(g_page-1);
+				    }else{
+				      loadPage(g_page+1);
+				    }
+				  }else{
+				    loadPage(dom.attr('index'));
+				  }
+				}).
             on('click', 'th, td:lt(5)', function(){
                 var type;
                 if(this.nodeName == 'TD'){
@@ -308,65 +370,236 @@
 
         }
 
-    function parseData(){
-        //$('tr:gt(1)').remove();
-        var h = `<tr>
-                <td></td>
-                <td></td>
-                <td>
-                    <select id='#lang_select'>
-                      <option value="" disabled selected>ALL</option>
-                      <option value="1">ENGLISH</option>
-                      <option value="2">JAPANESE</option>
-                      <option value="3">CHINESE</option>
-                    </select>
-                </td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>`;
-        var id = 0;
-        for(var d of g_datas){
-            if(a_get['lang'] != 'ALL' && d.lang != a_get['lang']) continue;
-            id++;
-
-             h = h +  `<tr>
-             <td><span class='_id'>`+id+`</span><img data-src="`+d.img+`" class='lazyload'></td>
-                <td><a target="_blank" href="https://www.google.com/search?q=`+d.title+`">`+d.title+`</a></td>
-                
-                <td>`+d.lang+`</td>`;
-
-             if(d.online != undefined){
-                h = h +  `<td>`+formatFileSize(d.online.size)+`</td>`;
-                h = h +  `<td class='_action'><a class='read' href="javascript:openNew('https://neysummer2000-location.glitch.me/?id=`+d.online.id+`&title=`+ encodeURI(d.title)+`')">readOnline</a>&nbsp;&nbsp;&nbsp;<a target="_blank" href="http://pan-yz.chaoxing.com/download/downloadfile?fleid=`+d.online.id+`&puid=142588570">directDownload</a></td>`;
-            }else{
-                 h = h +  `<td></td><td></td>`;
-            }
-
-             h = h + '<td>';
-            for(var i=0;i<d.link.length;i++){
-                if(d.link[i].indexOf('提取码') === -1){
-                 h = h + '<a target="_blank" href="'+d.link[i]+'">'+(i+1)+'.download</a>';
-                }else{
-                 h = h + d.link[i];
-                }
-                h = h + '     ';
-            }
-           
-            h = h + '</td></tr>';
+        function isFavorited(d){
+        	for(var i=0; i<g_favorite.length;i++){
+        		if(g_favorite[i].title == d.title && g_favorite[i].lang == d.lang){
+        			return i;
+        		}
+        	}
+        	return -1;
         }
+
+        function favoriteByDom(id, dom = null){
+        	var d = g_datas[id];
+        	var key = isFavorited(d);
+
+        	if(key != -1){
+        		g_favorite.splice(key, 1);
+        		dom.html('star_border');
+        	}else{
+        		g_favorite.push(g_datas[id]);
+        		dom.html('star');
+        	}
+			local_saveJson('favorite', g_favorite);
+        }
+
+
+
+        function initPage(page){
+        	var start, end;
+   			var i_max_page = parseInt(g_max / g_load)+1;
+        	 if(page == i_max_page){
+                start = i_max_page - 4;
+                if(start <= 0) start = 1;
+                end = i_max_page + 1;
+                b_end = true;
+            }else{
+                start = page - 2;
+                if(start <= 0) start = 1;
+                end = start+5;
+                var b_end = false;
+                if(end > g_max){
+                    b_end = true;
+                    end = g_max - 1;
+                }
+             }
+            var html = '';
+            for(var i = start; i<end;i++){
+               html = html + `<li index='`+i+`' class="`+(i == page ? 'active' : 'waves-effect')+`"><a href="#!">`+i+`</a></li>`;
+            }
+            if(!b_end){
+                if(i_max_page > 5){
+                     html = html + `<li index='-1' class='waves-effect'><a class='modal-trigger' href="javascript: pageSelecter();">...</a></li>`;
+                }
+               
+                // 最后一页显示
+                 html = html + `<li index='`+i_max_page+`' class="waves-effect"><a href="#!">`+i_max_page+`</a></li>`;
+
+            }else{
+                // 把... 换到前面
+                if(i_max_page > 5){
+
+                    html = `<li index='-1' class='waves-effect'><a class='modal-trigger' href="javascript: pageSelecter();">...</a></li>` + html;
+                }
+            }
+            html = `<ul class="pagination center" style="height: 100px;">
+                  <li class="`+(page == 1 ? 'disabled': 'waves-effect')+`"><a href="#!"><i class="material-icons">chevron_left</i></a></li>`+ html+`<li class="`+(b_end ? 'disabled': 'waves-effect')+`"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
+             </ul>`;
+
+
+             $('#_page').html(html);
+        }
+
+        function pageSelecter(){
+        	 var h = `<div class="modal-content">
+                <h4 style='text-align: center;'>Choose Page</h4>
+                  <div class="row">
+                  <a href='javascript: pageAdd(-1);' class="waves-effect waves-light btn col s3" style='margin-top: 13px;'><i class="material-icons left">navigate_before</i></a>
+				    <div class="input-field col s6">
+				      <input style='text-align: center;' value="`+g_page+`" id="page_input" type="number" class="validate">
+				      <label class="active" style='text-align: center;'>Page(1 - `+(parseInt(g_max / g_load)+1)+`)</label>
+				    </div>
+				<a href='javascript: pageAdd(1);' class="waves-effect waves-light btn col s3" style='margin-top: 13px;'><i class="material-icons right">navigate_next</i></a>
+
+				  </div>
+				  <div class="modal-footer">
+		          <a href="javascript: void(0)" onclick='toPage();' class="waves-effect waves-green btn-flat" >Go</a>
+		          <a href="javascript: void(0)" class="modal-close waves-effect waves-red btn-flat">Cancel</a>
+		          </div></div>`;
+            $('#modal2').html(h).modal('open');
+            $('#page_input').keydown(function(event) {
+            	if(event.which == 13){
+            		toPage();
+            	}
+            });
+        }
+
+        function pageAdd(add){
+        	var page = parseInt($('#page_input').val()) + add;
+        	var max_page = +parseInt(g_max / g_load)+1;
+        	if(page > max_page){
+        		page = max_page;
+        	}else
+        	if(page <= 0){
+        		page = 1;
+        	}
+        	$('#page_input').val(page);
+        }
+
+        function toPage(){
+        	var page = parseInt($('#page_input').val());
+        	var max_page = +parseInt(g_max / g_load)+1;
+        	if(page > max_page){
+        		//$('#modal2 h4').html('error page number!');
+        		$('#modal2 input').addClass('input_error');
+        	}else{
+        		loadPage(page);
+        		M.Modal.getInstance($('#modal2')).close();
+        	}
+        }
+
+    function loadPage(page, savemd5 = false){
+    	if(savemd5){
+          localStorage.setItem('data-md5', g_s_md5);
+          localStorage.setItem('data', JSON.stringify(g_datas));
+    	}
+    	if(g_max == -1){
+           g_max = g_datas.length;
+    	}
+
+        //$('tr:gt(1)').remove();
+        var id = 0;
+        var i_max_page = parseInt(g_max / g_load)+1;
+    	if(page > 0 && page <= i_max_page){
+        	g_page = page;
+         	toTop();
+    		
+    		var d;
+	        var start, end;
+            start = (page - 1) * g_load;
+            if(start < 0) start = 0;
+            end = start + g_load;
+            if(end > g_max) end = g_max - 1;
+
+             var h = `
+              <table id="table-two-axis" class="two-axis" style="display: none; margin-top: 50px;">
+		            <thead>
+		              <tr>
+		                <th>Book</th>
+		                <th></th>
+		                <th>Lang</th>
+		                <th>Size</th>
+		                <th>Action</th>
+		                <th>Backup</th>
+		              </tr>
+		            </thead>
+		            <tbody>
+		              <tr>
+		                <td></td>
+		                <td></td>
+		                <td>
+		                    <select id='#lang_select'>
+		                      <option value="" disabled selected>ALL</option>
+		                      <option value="1">ENGLISH</option>
+		                      <option value="2">JAPANESE</option>
+		                      <option value="3">CHINESE</option>
+		                    </select>
+		                </td>
+		                <td></td>
+		                <td></td>
+		                <td></td>
+		              </tr>`;
+            for(var id = start; id <= end; id++){
+            	d = g_datas[id];
+            	 if(a_get['lang'] != 'ALL' && d.lang != a_get['lang']) continue;
+	             h = h +  `<tr key=`+id+`>
+	             <td>
+	             <i data-index=`+id+` class="material-icons right star">`+(isFavorited(d)==-1?'star_border':'star') +`</i>
+	             <span class='_id'>`+(id+1)+`</span><img data-src="`+d.img+`" class='lazyload'></td>
+	                <td><a target="_blank" href="https://www.google.com/search?q=`+d.title+`">`+d.title+`</a></td>
+	                
+	                <td>`+d.lang+`</td>`;
+
+	             if(d.online != undefined){
+	                h = h +  `<td>`+formatFileSize(d.online.size)+`</td>`;
+	                h = h +  `<td class='_action'><a class='read' href="javascript:openNew('https://neysummer2000-location.glitch.me/?id=`+d.online.id+`&title=`+ encodeURI(d.title)+`')">readOnline</a>&nbsp;&nbsp;&nbsp;<a class='copy_btn' href="javascript: void(0)" data-clipboard-text="http://pan-yz.chaoxing.com/download/downloadfile?fleid=`+d.online.id+`&puid=142588570">directDownload</a></td>`;
+	            }else{
+	                 h = h +  `<td></td><td></td>`;
+	            }
+
+	             h = h + '<td>';
+	            for(var i=0;i<d.link.length;i++){
+	                if(d.link[i].indexOf('提取码') === -1){
+	                 h = h + '<a target="_blank" href="'+d.link[i]+'">'+(i+1)+'.download</a>';
+	                }else{
+	                 h = h + d.link[i];
+	                }
+	                h = h + '     ';
+	            }
+	           
+	            h = h + '</td></tr>';
+            }
+            h = h + '</tbody></table>'
         $('.preloader-wrapper').hide();
-        $('tbody').html(h);
+        $('#_table_show').html(h);
         $('select').val(a_get['lang']);
         $(".lazyload").lazyload({effect: "fadeIn"});
         $('#table-two-axis').show().basictable();
-
          if(a_get['s'] != undefined){
             $('._content').hide();
     		searchByKeyword();
         }
+
+       initCopyDom('.copy_btn');
+    	initPage(page);
+    }}
+
+    var g_clipboard;
+    function initCopyDom(selecter){
+    	if(g_clipboard != undefined){
+    		g_clipboard.destroy();    
+    	}
+    	g_clipboard = new Clipboard(selecter);
+		g_clipboard.on('success', function(e) {
+			console.log('aa');
+		    e.clearSelection();
+		    alert('Copied The Download URL!');
+		});
+		g_clipboard.on('error', function(e) {
+		    alert($(e.trigger).attr('data-clipboard-text'));
+		});
     }
-    
+
     function formatFileSize(fileSize) {
     if (fileSize < 1024) {
         return fileSize + 'B';
@@ -436,13 +669,15 @@
     	
         function openSearch(hide = true){
               //$('#search .collection').html('');
+
               $('.navbar-fixed').hide();
               $('#search').show();
               if(hide){
 	          		hideContent();
 	          	}
+	         $(document).scrollTop(0);
               setTimeout(function() {
-              	$('#search input').focus(); // 移动端弹出输入法会造成文档改变大小从而导致卡顿
+              	//$('#search input').focus(); // 移动端弹出输入法会造成文档改变大小从而导致卡顿
               }, 1000);
         }
 
@@ -482,23 +717,29 @@
               showContent();
         }
 
+        function toTop(){
+    		$('html,body').animate({ scrollTop: 0 }, 500);
+        }
+
         function searchByKeyword(){
            var s = $('#search input').val();
            var html = '';
+           var page;
+           var c = 0;
            if(s != ''){
-              var k = 1;
-              var c = 0;
+              var k = 0;
               for(var json of g_datas){
-                k++;
+                page = parseInt(k / g_load) + 1;
                 var i_s = json.title.indexOf(s);
                 if(i_s !== -1){
                 	c++;
-                  html = html + `<li class="collection-item avatar z-depth-2 waves-effect block" style='width: 100%;color: black;' key='`+k+`'>
+                  html = html + `<li class="collection-item avatar z-depth-2 waves-effect block" style='width: 100%;color: black;' key='`+k+`' page=`+page+`>
                     <img data-src="`+json.img+`" class="lazyload">
                     <div class="title">`+json.title.replace(s, '<span style="color: red">'+s+'</span>')+`</div>
                     <br>`+(json.online != undefined ? '<div class="chip">'+formatFileSize(json.online.size)+`</div>`:'')+`<div class="chip `+getColorByLang(json.lang)+` white-text">`+json.lang+`</div>
                     </p></li>`;
                 }
+                k++;
               }
            }
            if(c==0){
@@ -520,9 +761,19 @@
             }
         }
 
-         function toItem(index){
+         function toItem(dom){
             $('.search_active').removeClass('search_active');
-            $(document).scrollTop($('#table-two-axis tr:eq('+index+')').addClass('search_active').offset().top - $(this).height() / 2);
+         	var index = dom.attr('key');
+         	var page = dom.attr('page');
+         	console.log(page , g_page);
+         	if(page != g_page){
+         		loadPage(page);
+         	}
+         	setTimeout(function(){
+         		var find = $('tr[key='+index+']');
+	         	find.addClass('search_active');
+	            $(document).scrollTop(find.offset().top - $(this).height() / 2);
+         	}, 500);
         }
     </script>
 </body>

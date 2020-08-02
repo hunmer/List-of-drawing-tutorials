@@ -25,10 +25,6 @@ nav i{
     white-space: nowrap;
 }
 
-.card .card-title {
-    font-size: 13px !important;
-    padding: 35px !important;
-}
 
 .logo {
     color: #d8efec !important;
@@ -69,4 +65,52 @@ nav i{
 
 ._id {
     width: calc(100% - 200px);
+}
+
+.input_error {
+    border-bottom: 1px solid red !important;
+    -webkit-box-shadow: 0 1px 0 0 red !important;
+    box-shadow: 0 1px 0 0 red !important;
+}
+
+.star {
+    position: absolute;
+    z-index: 222;
+    font-size: 26px;
+    color: yellow;
+    margin-top: 16px;
+    right: 7px;
+    text-shadow: -1px 1px 6px #000000, 1px 1px 6px #949494, -1px 1px 0px #ffe81e, 1px -1px 0px #607D8B;
+}
+
+#test2 .card .card-content {
+    padding: 7px !important;
+}
+
+#test2 .card .card-reveal {
+     padding: 0px !important;
+ }
+
+ #test2 .card .card-image {
+    padding-top: 10px;
+ }
+
+
+ #test2 .card ul {
+     width: calc(100% - 7%);
+    margin-left: 5px;
+    margin-top: 2px;
+ }
+
+
+ .card .card-title {
+     font-style: italic; 
+    font-size: 13px !important;
+    padding: 13px !important;
+}
+
+.bottom {
+    position: absolute;
+    bottom: 8px;
+    right: 6px;
 }
