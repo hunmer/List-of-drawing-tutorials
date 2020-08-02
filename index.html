@@ -222,11 +222,9 @@
 	  	var likeCount = parseInt($('#like_btn span').html());
 	  	if(isLike){
 	  		likeCount--;
-	  		$('#like_btn i').css('cssText', '');
 	  		setLocalItem('isLiked', 0);
 	  	}else{
 	  		likeCount++;
-	  		$('#like_btn i').css('cssText', 'color: red!important');
 	  		setLocalItem('isLiked', 1);
 	  	}
 	  	updateStatus();
@@ -238,12 +236,15 @@
 	  	//var api = './php/like.php';
 	  	var api ='https://neysummer2000-location.glitch.me/like.php';
 	  	 $.post(api, params, function(data, textStatus, xhr) {
-	  	 	data = JSON.parse(data);
-	  	 	if(data != undefined){
-	  	 		$('#like_btn span').html(data.count);
-		  		setLocalItem('likeCount', parseInt(data.count));
-		  		setLocalItem('isLiked', parseInt(data.liked));
-		  		updateStatus();
+	  	 	if(textStatus == 'success'){
+	  	 		console.log(data);
+		  	 	data = JSON.parse(data);
+		  	 	if(data != undefined){
+		  	 		$('#like_btn span').html(data.count);
+			  		setLocalItem('likeCount', parseInt(data.count));
+			  		setLocalItem('isLiked', parseInt(data.liked));
+			  		updateStatus();
+		  	 	}
 	  	 	}
          });
 	  }
