@@ -27,12 +27,6 @@
     width: 90px;
     height: 120px;
     }
-    #layout {
-    	position: fixed;
-    	/*background-color: black;*/
-    	width: 100%;
-    	display: none;
-    }
 
     #search_res {
     	height: 0;
@@ -143,7 +137,6 @@
    <div id="modal_comment" class="modal modal-fixed-footer">
    </div>
   <div class='_content' id="test1" class="col s12">
-  <div id='layout'></div>
  <div class="preloader-wrapper big active">
     <div class="spinner-layer spinner-blue-only">
       <div class="circle-clipper left">
@@ -213,6 +206,7 @@
 	var g_datas = [];
 	var a_get = getGETArray();
 	var g_max = -1;
+	var g_page = 0;
 
       window.history.pushState(null, null, "#");
 	   window.addEventListener("popstate", function(event) {
@@ -232,6 +226,17 @@
             } 
         }
         return a_result;
+    }
+
+    function initData(save = false){
+    	var val = $('input#search').val;
+    	if(val == ''){ // 没有搜索,直接加载
+    		loadPage(1, false);
+    	}else{
+    		// 等待用户选择项目
+            $('._content').hide();
+    		searchByKeyword();
+    	}
     }
 
      function submitMessage(){
@@ -268,15 +273,14 @@
             //initFavorite();
 
             if(a_get['s'] != undefined){
+            	$('input#search').val(a_get['s']);
+        		a_get['s'] = '';
             	openSearch(false);
-        		$('input#search').val(a_get['s']);
             }
-
 
             if(localStorage.getItem('data-md5') == g_s_md5){
             	g_datas = JSON.parse(localStorage.getItem('data'));
-                loadPage(1, false);
-                console.log('cache');
+            	initData(false);
             }else
             if(window.location.protocol == 'file:'){
                 var D = document;
@@ -287,12 +291,12 @@
                  scriptNode.textContent  = '(alert(1))()';
                 targ.appendChild (scriptNode);
                 scriptNode.onload = function() {
-                  loadPage(1, true);
+            		initData();
                 }
              }else{
                  $.getJSON('./js/drawbooks.json', function(json, textStatus) {
                     g_datas = json;
-                    loadPage(1, true);
+            		initData();
                 });
              }
 
@@ -571,15 +575,11 @@
             }
             h = h + '</tbody></table>'
         $('.preloader-wrapper').hide();
-        $('#_table_show').html(h);
         $('select').val(a_get['lang']);
+        $('#_table_show').html(h);
         $(".lazyload").lazyload({effect: "fadeIn"});
         $('#table-two-axis').show().basictable();
-         if(a_get['s'] != undefined){
-            $('._content').hide();
-    		searchByKeyword();
-        }
-
+       
        initCopyDom('.copy_btn');
     	initPage(page);
     }}
@@ -682,28 +682,11 @@
         }
 
         function hideContent(){
-        	$('#layout').css({
-        		display: 'block',
-        		top: $('._content').offset().top,
-        		height: $('._content').height(),
-        		zIndex: 1
-        	});
-        
-           $('._content').css({
-           	 	opacity: 0,
-    			zIndex: -1
-           });
+           $('._content').hide();
         }
 
         function showContent(){
-        	$('#layout').css({
-        		zIndex: 0,
-        		display: 'none'
-        	});
-           $('._content').css({
-           	 	opacity: 1,
-    			zIndex: 0
-           });
+           $('._content').show();
         }
 
         function closeSearch(reset = true){
@@ -765,14 +748,15 @@
             $('.search_active').removeClass('search_active');
          	var index = dom.attr('key');
          	var page = dom.attr('page');
-         	console.log(page , g_page);
          	if(page != g_page){
          		loadPage(page);
          	}
          	setTimeout(function(){
          		var find = $('tr[key='+index+']');
-	         	find.addClass('search_active');
-	            $(document).scrollTop(find.offset().top - $(this).height() / 2);
+         		if(find.length > 0){
+         			find.addClass('search_active');
+	          	  $(document).scrollTop(find.offset().top - $(this).height() / 2);
+         		}
          	}, 500);
         }
     </script>
