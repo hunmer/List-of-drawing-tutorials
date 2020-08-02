@@ -21,6 +21,7 @@
 <meta name="description" content="List of drawing tutorials"/>
 <link rel="shortcut icon" href="favicon.svg">
 <title>List of drawing tutorials</title>
+<script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5f268ab8dc4b84001371c287&product=inline-share-buttons" async="async"></script>
 </head> 
 <style type="text/css">
     img {
@@ -42,14 +43,18 @@
     ._id {
     	margin: 0px auto;
     }
+
+    .st-logo,.st-disclaimer {
+    	display: none;
+    }
 </style>
 <body>
    
    <div class="navbar-fixed">
     <nav class="nav-extended">
     <div class="nav-wrapper">
-      <a href="javascript:$('.sidenav').sidenav('open');" class="brand-logo logo" style="width: fit-content;">List of drawing tutorials(1380)</a>
-      <a href="javascript:void(0)" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+      <!-- <a href="javascript:$('.sidenav').sidenav('open');" class="brand-logo logo" style="width: fit-content;">List of drawing tutorials(1380)</a> -->
+      <a href="javascript:void(0)" data-target="slide-out" class="sidenav-trigger" style="    display: unset !important;"><i class="material-icons">menu</i></a>
       <a href="javascript:void(0)" onclick="openSearch();" class="right mr"><i class="material-icons">search</i></a>
       <a href="javascript:void(0)" id='like_btn' onclick="likeSite();" class="right mr" style="display: flex; padding-left: 10px;"><i class="material-icons">favorite</i><span style="color: white; margin-left: 2px;">0</span></a>
     </div>
@@ -81,6 +86,7 @@
   </nav>
 <!-- 侧边栏开始 -->  
   <ul id="slide-out" class="sidenav">
+    <li><a href="javascript: $('.sidenav').sidenav('close');$('.st-btn.st-last').click();"><i class="material-icons">share</i>Share</a></li>
     <li><a href="javascript: $('.sidenav').sidenav('close');$('#modal1').modal('open');"><i class="material-icons">email</i>Suggest</a></li>
     <li><a target="_blank" href="https://github.com/hunmer/List-of-drawing-tutorials"><i class="material-icons">code</i>Code</a></li>
   <ul class="collapsible">
@@ -172,7 +178,8 @@
           </tbody>
       </table>
   </div>
-      <div id='_page'></div>
+      <div id='_page' style="margin-top: 10px; height: 40px;"></div>
+      <div class="sharethis-inline-share-buttons"></div>
   </div>
     <div class='_content' id="test2" class="col s12" style="display: none; margin-top: 50px;">
     <!-- <div class="fixed-action-btn">
@@ -237,7 +244,7 @@
 	  	var api ='https://neysummer2000-location.glitch.me/like.php';
 	  	 $.post(api, params, function(data, textStatus, xhr) {
 	  	 	if(textStatus == 'success'){
-	  	 		console.log(data);
+	  	 		//console.log(data);
 		  	 	data = JSON.parse(data);
 		  	 	if(data != undefined){
 		  	 		$('#like_btn span').html(data.count);
@@ -333,7 +340,7 @@
                 });
              }
 
-            $(document).on('click', 'img', function(){
+            $(document).on('click', 'tr img', function(){
                 var d = $(this).parent().parent().parent().find('a.read');
                 if(d.length > 0) d[0].click();
             })
@@ -625,7 +632,6 @@
     	}
     	g_clipboard = new Clipboard(selecter);
 		g_clipboard.on('success', function(e) {
-			console.log('aa');
 		    e.clearSelection();
 		    alert('Copied The Download URL!');
 		});
@@ -736,6 +742,10 @@
 
         function toTop(){
     		$('html,body').animate({ scrollTop: 0 }, 500);
+        }
+
+        function toPageEnd(){
+    		$('html,body').animate({ scrollTop: $(this).height() }, 500);
         }
 
         function searchByKeyword(){

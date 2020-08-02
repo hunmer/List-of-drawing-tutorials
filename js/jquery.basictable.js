@@ -112,10 +112,15 @@
 
     var start = function(table, data) {
       table.addClass('bt');
+      console.log('start');
       $('td[data-th=Book] .bt-content').css('float', 'right');
       $('td[data-th=ID] .bt-content').css('width', '100%').css('width', '-=130px');
       var a = $("td[data-th='Book']").attr('data-th', '').addClass('_book');
-
+      $('.star').css({
+          marginTop: '16px',
+          left: '',
+          right: '7px'
+      });
       a.next().find('.bt-content').css('width', '100%').css('width', '-=200px');
       $("td[data-th='ID']").attr('data-th', 'Book').addClass('_id');
       if (data.tableWrap) {
@@ -124,12 +129,17 @@
     };
 
     var end = function(table, data) {
+      console.log('end');
+
       table.removeClass('bt');
       $('td[data-th=Book] .bt-content').css('float', '');
       $('td[data-th=ID] .bt-content').css('maxWidth', '');
       $('._book').attr('data-th', 'Book').removeClass('_book');
       $('._id').attr('data-th', 'ID').removeClass('_id');
-
+      $('.star').css({
+          marginTop: '20px',
+          left: '0px'
+      });
       if (data.tableWrap) {
         table.parent('.bt-wrapper').removeClass('active');
       }
