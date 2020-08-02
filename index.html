@@ -229,9 +229,9 @@
     }
 
     function initData(save = false){
-    	var val = $('input#search').val;
+    	var val = $('input#search').val();
     	if(val == ''){ // 没有搜索,直接加载
-    		loadPage(1, false);
+    		loadPage(1, save);
     	}else{
     		// 等待用户选择项目
             $('._content').hide();
