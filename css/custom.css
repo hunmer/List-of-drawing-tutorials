@@ -75,6 +75,7 @@ nav i{
 }
 
 .star {
+    cursor: pointer;
     position: absolute;
     z-index: 222;
     font-size: 26px;
@@ -104,14 +105,50 @@ nav i{
  }
 
 
+ #test2 .card ul li {
+    cursor: pointer;
+ }
+
+
+
+
  .card .card-title {
      font-style: italic; 
     font-size: 13px !important;
     padding: 13px !important;
 }
 
+.card img {
+    margin: 0px auto;
+    width: 100px !important;
+    height: 120px;
+}
+
 .bottom {
     position: absolute;
     bottom: 8px;
     right: 6px;
+}
+
+img {
+    width: 90px;
+    height: 120px;
+}
+
+#search_res {
+    height: 0;
+    display: block;
+    position: absolute !important;
+    right: 3px;
+    margin-top: 18px;
+    color: red;
+    font-size: 14px;
+    z-index: 999;
+}
+.st-logo,.st-disclaimer {
+    display: none;
+}
+
+._id {
+  margin: 0px auto;
 }

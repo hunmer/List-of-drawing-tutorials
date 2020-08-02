@@ -1,803 +1,772 @@
 <!DOCTYPE html>
 <html lang="zh">
-<head>
-  <link href="font/icon.css" rel="stylesheet">
-  <meta charset="utf-8">
-  <link type="text/css" rel="stylesheet" href="css/materialize.css"  media="screen,projection"/>
-  <link type="text/css" rel="stylesheet" href="css/custom.css"  media="screen,projection"/>
-  <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" type="text/css" href="css/basictable.css" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta http-equiv="Content-Security-Policy" content="block-all-mixed-content">
-
-<!-- 强制移动设备以app模式打开页面(即在移动设备下全屏，仅支持部分浏览器) -->
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-touch-fullscreen" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black">
-<meta name="full-screen" content="yes"><!--UC强制全屏-->
-<meta name="browsermode" content="application"><!--UC应用模式-->
-<meta name="x5-fullscreen" content="true"><!--QQ强制全屏-->
-<meta name="x5-page-mode" content="app"><!--QQ应用模式-->
-<meta name="description" content="List of drawing tutorials"/>
-<link rel="shortcut icon" href="favicon.svg">
-<title>List of drawing tutorials</title>
-<script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5f268ab8dc4b84001371c287&product=inline-share-buttons" async="async"></script>
-</head> 
-<style type="text/css">
-    img {
-    width: 90px;
-    height: 120px;
-    }
-
-    #search_res {
-    	height: 0;
-        display: block;
-	    position: absolute !important;
-	    right: 3px;
-	    margin-top: 18px;
-	    color: red;
-	    font-size: 14px;
-	    z-index: 999;
-    }
-    .st-logo,.st-disclaimer {
-    	display: none;
-    }
-</style>
-<body>
-   
-   <div class="navbar-fixed">
-    <nav class="nav-extended">
-    <div class="nav-wrapper">
-      <!-- <a href="javascript:$('.sidenav').sidenav('open');" class="brand-logo logo" style="width: fit-content;">List of drawing tutorials(1380)</a> -->
-      <a href="javascript:void(0)" data-target="slide-out" class="sidenav-trigger" style="    display: unset !important;"><i class="material-icons">menu</i></a>
-      <a href="javascript:void(0)" onclick="openSearch();" class="right mr"><i class="material-icons">search</i></a>
-      <a href="javascript:void(0)" id='like_btn' onclick="likeSite();" class="right mr" style="display: flex; padding-left: 10px;"><i class="material-icons">favorite</i><span style="color: white; margin-left: 2px;">0</span></a>
-    </div>
-    <div class="nav-content">
-      <ul class="tabs tabs-transparent">
-        <li class="tab"><a class="active" href="#test1">List</a></li>
-        <li class="tab" onclick='initFavorite();'><a href="#test2">Favorite</a></li>
-      </ul>
-    </div>
-
-  </nav>
-</div>
-
-  <!-- 搜索界面 -->
-    <nav id='search' style="display: none;height: 58px;background-color: white;">
-    <div class="nav-wrapper">
-      <form style="margin-bottom: 0px !important;height: 8%" onsubmit="return false;">
-      <span id='search_res'></span>
-
-        <div class="input-field">
-          <input id="search" type="search" oninput='searchByKeyword();' required style="height: 58px;">
-          <label class="label-icon" for="search"><i class="material-icons">search</i></label>
-          <i class="material-icons" onclick="closeSearch(true);">close</i>
+    <head>
+        <link href="font/icon.css" rel="stylesheet">
+        <meta charset="utf-8">
+        <link type="text/css" rel="stylesheet" href="css/materialize.css" media="screen,projection"/>
+        <link type="text/css" rel="stylesheet" href="css/custom.css" media="screen,projection"/>
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" type="text/css" href="css/basictable.css"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <meta http-equiv="Content-Security-Policy" content="block-all-mixed-content">
+        <!-- 强制移动设备以app模式打开页面(即在移动设备下全屏，仅支持部分浏览器) -->
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-touch-fullscreen" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <meta name="full-screen" content="yes">
+        <!--UC强制全屏-->
+        <meta name="browsermode" content="application">
+        <!--UC应用模式-->
+        <meta name="x5-fullscreen" content="true">
+        <!--QQ强制全屏-->
+        <meta name="x5-page-mode" content="app">
+        <!--QQ应用模式-->
+        <meta name="description" content="List of drawing tutorials"/>
+        <link rel="shortcut icon" href="favicon.svg">
+        <title>List of drawing tutorials</title>
+        <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5f268ab8dc4b84001371c287&product=inline-share-buttons" async="async"></script>
+    </head>
+    <body>
+        <div class="navbar-fixed">
+            <nav class="nav-extended">
+                <div class="nav-wrapper">
+                    <!-- <a href="javascript:$('.sidenav').sidenav('open');" class="brand-logo logo" style="width: fit-content;">List of drawing tutorials(1380)</a> -->
+                    <a href="javascript:void(0)" data-target="slide-out" class="sidenav-trigger" style="    display: unset !important;">
+                        <i class="material-icons">menu</i>
+                    </a>
+                    <a href="javascript:void(0)" onclick="openSearch();" class="right mr">
+                        <i class="material-icons">search</i>
+                    </a>
+                    <a href="javascript:void(0)" id='like_btn' onclick="likeSite();" class="right mr" style="display: flex; padding-left: 10px;">
+                        <i class="material-icons">favorite</i>
+                        <span style="color: white; margin-left: 2px;">0</span>
+                    </a>
+                </div>
+                <div class="nav-content">
+                    <ul class="tabs tabs-transparent">
+                        <li class="tab">
+                            <a class="active" href="#test1">List</a>
+                        </li>
+                        <li class="tab" onclick='initFavorite();'>
+                            <a href="#test2">Favorite</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
         </div>
-      </form>
-      <ul class="collection" style="margin-top: 60px !important;border: 0px !important;z-index: 33">
-     </ul>
-    </div>
-  </nav>
-<!-- 侧边栏开始 -->  
-  <ul id="slide-out" class="sidenav">
-    <li><a href="javascript: $('.sidenav').sidenav('close');$('.st-btn.st-last').click();"><i class="material-icons">share</i>Share</a></li>
-    <li><a href="javascript: $('.sidenav').sidenav('close');$('#modal1').modal('open');"><i class="material-icons">email</i>Suggest</a></li>
-    <li><a target="_blank" href="https://github.com/hunmer/List-of-drawing-tutorials"><i class="material-icons">code</i>Code</a></li>
-  <ul class="collapsible">
-    <li>
-      <div class="collapsible-header"><i class="material-icons">link</i>Links</div>
-      <div class="collapsible-body">
-        <a target="_blank" href="https://vk.com/topic-4918594_27696136?offset=0" style="text-align: center;" class='block'>Bykodorova Katerina(5700pdf+)</a>
-
-      </div>
-    </li>
-   
-  </ul>
-
-  </ul>
-<!-- 侧边栏结束 -->
-
-  <!-- Modal Structure -->
-  <div id="modal1" class="modal">
-    <div class="modal-content">
-      <h4>Suggest</h4>
-      <p id='Suggest_tip' style="color: red;"></p>
-       <div class="row">
-            <form>
-              <div class="row">
-                <div class="input-field">
-                  <i class="material-icons prefix">title</i>
-                  <textarea id="icon_prefix2" class="materialize-textarea"></textarea>
-                  <label for="icon_prefix2">Title</label>
-                  <span class="helper-text" data-error="wrong" data-success="right"></span>
+        <!-- 搜索界面 -->
+        <nav id='search' style="display: none;height: 58px;background-color: white;">
+            <div class="nav-wrapper">
+                <form style="margin-bottom: 0px !important;height: 8%" onsubmit="return false;">
+                    <span id='search_res'></span>
+                    <div class="input-field">
+                        <input id="search" type="search" oninput='searchByKeyword();' required style="height: 58px;">
+                        <label class="label-icon" for="search">
+                            <i class="material-icons">search</i>
+                        </label>
+                        <i class="material-icons" onclick="closeSearch(true);">close</i>
+                    </div>
+                </form>
+                <ul class="collection" style="margin-top: 60px !important;border: 0px !important;z-index: 33"></ul>
+            </div>
+        </nav>
+        <!-- 侧边栏开始 -->
+        <ul id="slide-out" class="sidenav">
+            <li>
+                <a href="javascript: $('.sidenav').sidenav('close');$('.st-btn.st-last').click();">
+                    <i class="material-icons">share</i>
+                    Share
+                </a>
+            </li>
+            <li>
+                <a href="javascript: $('.sidenav').sidenav('close');$('#modal1').modal('open');">
+                    <i class="material-icons">email</i>
+                    Suggest
+                </a>
+            </li>
+            <li>
+                <a target="_blank" href="https://github.com/hunmer/List-of-drawing-tutorials">
+                    <i class="material-icons">code</i>
+                    Code
+                </a>
+            </li>
+            <ul class="collapsible">
+                <li>
+                    <div class="collapsible-header">
+                        <i class="material-icons">link</i>
+                        Links
+                    </div>
+                    <div class="collapsible-body">
+                        <a target="_blank" href="https://vk.com/topic-4918594_27696136?offset=0" style="text-align: center;" class='block'>Bykodorova Katerina(5700pdf+)</a>
+                    </div>
+                </li>
+            </ul>
+        </ul>
+        <!-- 侧边栏结束 -->
+        <!-- Modal Structure -->
+        <div id="modal1" class="modal">
+            <div class="modal-content">
+                <h4>Suggest</h4>
+                <p id='Suggest_tip' style="color: red;"></p>
+                <div class="row">
+                    <form>
+                        <div class="row">
+                            <div class="input-field">
+                                <i class="material-icons prefix">title</i>
+                                <textarea id="icon_prefix2" class="materialize-textarea"></textarea>
+                                <label for="icon_prefix2">Title</label>
+                                <span class="helper-text" data-error="wrong" data-success="right"></span>
+                            </div>
+                            <div class="input-field">
+                                <i class="material-icons prefix">message</i>
+                                <textarea id="icon_prefix2" class="materialize-textarea"></textarea>
+                                <label for="icon_prefix2">Text</label>
+                                <span class="helper-text" data-error="wrong" data-success="right"></span>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-                <div class="input-field">
-                  <i class="material-icons prefix">message</i>
-                  <textarea id="icon_prefix2" class="materialize-textarea"></textarea>
-                  <label for="icon_prefix2">Text</label>
-                  <span class="helper-text" data-error="wrong" data-success="right"></span>
+                <div class="progress" style="display: none;">
+                    <div class="indeterminate"></div>
                 </div>
-              </div>
-            </form>
-          </div>
-            <div class="progress" style="display: none;">
-                  <div class="indeterminate"></div>
-           </div>
-    </div>
-    <div class="modal-footer">
-      <a href="#!" class="waves-effect waves-green btn-flat" onclick="submitMessage();">Send</a>
-    </div>
-  </div>
+            </div>
+            <div class="modal-footer">
+                <a href="#!" class="waves-effect waves-green btn-flat" onclick="submitMessage();">Send</a>
+            </div>
+        </div>
+        <!-- 自定义弹出 -->
+        <div id="modal2" class="modal"></div>
+        <div id="modal_comment" class="modal modal-fixed-footer"></div>
+        <div class='_content' id="test1" class="col s12">
+            <div class="preloader-wrapper big active">
+                <div class="spinner-layer spinner-blue-only">
+                    <div class="circle-clipper left">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="gap-patch">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="circle-clipper right">
+                        <div class="circle"></div>
+                    </div>
+                </div>
+            </div>
+            <div id='_table_show'>
+                <table id="table-two-axis" class="two-axis" style="display: none; margin-top: 50px;">
+                    <thead>
+                        <tr>
+                            <th>Book</th>
+                            <th></th>
+                            <th>Lang</th>
+                            <th>Size</th>
+                            <th>Action</th>
+                            <th>Backup</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div id='_page' style="margin-top: 10px; height: 40px;"></div>
+            <div class="sharethis-inline-share-buttons"></div>
+        </div>
+        <div class='_content' id="test2" class="col s12" style="display: none; margin-top: 50px;">
+            <!-- <div class="fixed-action-btn">
+    <a class="btn-floating btn-large red">
+      <i class="large material-icons">mode_edit</i>
+    </a>
+    <ul>
+      <li><a class="btn-floating red"><i class="material-icons">input</i></a></li>
+      <li><a class="btn-floating yellow darken-1"><i class="material-icons">Import</i></a></li>
+      <li><a class="btn-floating green"><i class="material-icons">delete</i></a></li>
+      <li><a class="btn-floating blue"><i class="material-icons">exit_to_app</i></a></li>
+    </ul>
+  </div> -->
+            <div class="row" style="margin: 3px;"></div>
+        </div>
+        <script src="js/jquery.min.js" type="text/javascript"></script>
+        <script src="js/until.js" type="text/javascript"></script>
+        <script type="text/javascript" src='js/clipboard.min.js'></script>
+        <script type="text/javascript" src="js/lazyload.min.js"></script>
+        <script type="text/javascript" src="js/jquery.basictable.js"></script>
+        <script type="text/javascript" src="js/materialize.min.js"></script>
+        <script>
+            var g_s_md5 = 'f92139d21f18c072728f2b2498cc117b';
+            var g_load = 20;
+            var g_s_search = '';
+            var g_search = [];
+            var g_datas = [];
+            var a_get = getGETArray();
+            var g_max = -1;
+            var g_page = 0;
 
-  <!-- 自定义弹出 -->
-  <div id="modal2" class="modal">
-    
-  </div>
-
-   <div id="modal_comment" class="modal modal-fixed-footer">
-   </div>
-  <div class='_content' id="test1" class="col s12">
- <div class="preloader-wrapper big active">
-    <div class="spinner-layer spinner-blue-only">
-      <div class="circle-clipper left">
-        <div class="circle"></div>
-      </div><div class="gap-patch">
-        <div class="circle"></div>
-      </div><div class="circle-clipper right">
-        <div class="circle"></div>
-      </div>
-    </div>
-  </div>
-  <div id='_table_show'>
- <table id="table-two-axis" class="two-axis" style="display: none; margin-top: 50px;">
-            <thead>
-              <tr>
-                <th>Book</th>
-                <th></th>
-                <th>Lang</th>
-                <th>Size</th>
-                <th>Action</th>
-                <th>Backup</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-          </tbody>
-      </table>
-  </div>
-      <div id='_page' style="margin-top: 10px; height: 40px;"></div>
-      <div class="sharethis-inline-share-buttons"></div>
-  </div>
-    <div class='_content' id="test2" class="col s12" style="display: none; margin-top: 50px;">
-    <!-- <div class="fixed-action-btn">
-	  <a class="btn-floating btn-large red">
-	    <i class="large material-icons">mode_edit</i>
-	  </a>
-	  <ul>
-	    <li><a class="btn-floating red"><i class="material-icons">input</i></a></li>
-	    <li><a class="btn-floating yellow darken-1"><i class="material-icons">Import</i></a></li>
-	    <li><a class="btn-floating green"><i class="material-icons">delete</i></a></li>
-	    <li><a class="btn-floating blue"><i class="material-icons">exit_to_app</i></a></li>
-	  </ul>
-	</div> -->
-    <div class="row" style="margin: 3px;">
-    </div>
-
-  </div>
-
-	<script src="js/jquery.min.js" type="text/javascript"></script>
-	<script src="js/until.js" type="text/javascript"></script>
-	<script type="text/javascript" src='js/clipboard.min.js'></script>
-    <script type="text/javascript" src="js/lazyload.min.js"></script>
-    <script type="text/javascript" src="js/jquery.basictable.js"></script>
-    <script type="text/javascript" src="js/materialize.min.js"></script>
-
-	<script>
-     var g_s_md5 = 'f92139d21f18c072728f2b2498cc117b';
-     var g_load = 20;
-	var g_s_search = '';
-	var g_search = [];
-	var g_datas = [];
-	var a_get = getGETArray();
-	var g_max = -1;
-	var g_page = 0;
-
-      window.history.pushState(null, null, "#");
-	   window.addEventListener("popstate", function(event) {
-	      if($('#test2').hasClass('active')){
-	      	$('.tab a')[0].click()
-	      	window.history.pushState(null, null, "");
-	      	event.preventDefault(true);
-	      }
-	   });
-
-	  function likeSite(){
-	  	var isLike = parseInt(getLocalItem('isLiked', 0)) == 1;
-	  	var likeCount = parseInt($('#like_btn span').html());
-	  	if(isLike){
-	  		likeCount--;
-	  		setLocalItem('isLiked', 0);
-	  	}else{
-	  		likeCount++;
-	  		setLocalItem('isLiked', 1);
-	  	}
-	  	updateStatus();
-	  	getLikeCount({s: isLike ? '0' : '1'});
-	  	$('#like_btn span').html(likeCount);
-	  }
-
-	  function getLikeCount(params = {}){
-	  	//var api = './php/like.php';
-	  	var api ='https://neysummer2000-location.glitch.me/like.php';
-	  	 $.post(api, params, function(data, textStatus, xhr) {
-	  	 	if(textStatus == 'success'){
-	  	 		//console.log(data);
-		  	 	data = JSON.parse(data);
-		  	 	if(data != undefined){
-		  	 		$('#like_btn span').html(data.count);
-			  		setLocalItem('likeCount', parseInt(data.count));
-			  		setLocalItem('isLiked', parseInt(data.liked));
-			  		updateStatus();
-		  	 	}
-	  	 	}
-         });
-	  }
-
-     function getGETArray(){
-        var a_result = [], a_exp;
-        var a_params = window.location.search.slice(1).split('&');
-        for(var k in a_params){
-            a_exp = a_params[k].split('=');
-            if(a_exp.length > 1){
-                a_result[a_exp[0]] = decodeURIComponent(a_exp[1]);
-            } 
-        }
-        return a_result;
-    }
-
-    function initData(save = false){
-    	var val = $('input#search').val();
-    	if(val == ''){ // 没有搜索,直接加载
-    		loadPage(1, save);
-    	}else{
-    		// 等待用户选择项目
-            $('._content').hide();
-    		searchByKeyword();
-    	}
-    }
-
-     function submitMessage(){
-        if($('textarea')[0].value == ''){
-            $($('.helper-text')[0]).html('empty title').css({'color': 'red', 'display': ''});
-            return;
-        }
-        $($('.helper-text')[0]).hide();
-         if($('textarea')[1].value == ''){
-            $($('.helper-text')[1]).html('empty text').css({'color': 'red', 'display': ''});
-            return;
-        }
-         $($('.helper-text')[1]).hide();
-         $('.progress').show();
-
-         $.post('https://neysummer2000-location.glitch.me/report.php', {title: $('textarea')[0].value, message: $('textarea')[1].value}, function(data, textStatus, xhr) {
-            if(textStatus == 'success' && data == 'success'){
-                M.toast({html: 'Send Success!'});
-                $('#modal1').modal('close');
-            }else{
-                alert('Failed To Send!')
-            }
-         }).always(function(){
-            $('.progress').hide();
-         });
-    }
-       
-        if(a_get['lang'] == undefined){
-            a_get['lang'] = 'ALL';
-        }
-        $(function(){
-           M.AutoInit();
-            $('textarea').characterCounter();
-            //initFavorite();
-            if(a_get['s'] != undefined){
-            	$('input#search').val(a_get['s']);
-        		a_get['s'] = '';
-	      		window.history.pushState(null, null, "");
-            	openSearch(false);
-            }
-
-            if(localStorage.getItem('data-md5') == g_s_md5){
-            	g_datas = JSON.parse(localStorage.getItem('data'));
-            	initData(false);
-            }else
-            if(window.location.protocol == 'file:'){
-                var D = document;
-                var scriptNode = D.createElement ('script');
-                scriptNode.type = "text/javascript";
-                scriptNode.src = './js/drawbooks.js';
-                var targ = D.getElementsByTagName ('head')[0] || D.body || D.documentElement;
-                 scriptNode.textContent  = '(alert(1))()';
-                targ.appendChild (scriptNode);
-                scriptNode.onload = function() {
-            		initData();
+            window.history.pushState(null, null, "#");
+            window.addEventListener("popstate", function(event) {
+                if ($('#test2').hasClass('active')) {
+                    $('.tab a')[0].click()
+                    window.history.pushState(null, null, "");
+                    event.preventDefault(true);
                 }
-             }else{
-                 $.getJSON('./js/drawbooks.json', function(json, textStatus) {
-                    g_datas = json;
-            		initData();
+            });
+
+            function likeSite() {
+                var isLike = parseInt(getLocalItem('isLiked', 0)) == 1;
+                var likeCount = parseInt($('#like_btn span').html());
+                if (isLike) {
+                    likeCount--;
+                    setLocalItem('isLiked', 0);
+                } else {
+                    likeCount++;
+                    setLocalItem('isLiked', 1);
+                }
+                updateStatus();
+                getLikeCount({
+                    s: isLike ? '0' : '1'
                 });
-             }
+                $('#like_btn span').html(likeCount);
+            }
 
-            $(document).on('click', 'tr img', function(){
-                var d = $(this).parent().parent().parent().find('a.read');
-                if(d.length > 0) d[0].click();
-            })
-            .on('click', '#search .collection-item', function() {
-                closeSearch(false);
-                toItem($(this))
-            })
-            .on('click', 'tr', function() {
-                if($(this).hasClass('search_active')){
-                    $(this).removeClass('search_active');
+            function getLikeCount(params={}) {
+                //var api = './php/like.php';
+                var api = 'https://neysummer2000-location.glitch.me/like.php';
+                $.post(api, params, function(data, textStatus, xhr) {
+                    if (textStatus == 'success') {
+                        data = JSON.parse(data);
+                        if (data != undefined) {
+                            $('#like_btn span').html(data.count);
+                            setLocalItem('likeCount', parseInt(data.count));
+                            setLocalItem('isLiked', parseInt(data.liked));
+                            updateStatus();
+                        }
+                    }
+                });
+            }
+
+            function getGETArray() {
+                var a_result = [], a_exp;
+                var a_params = window.location.search.slice(1).split('&');
+                for (var k in a_params) {
+                    a_exp = a_params[k].split('=');
+                    if (a_exp.length > 1) {
+                        a_result[a_exp[0]] = decodeURIComponent(a_exp[1]);
+                    }
                 }
-                
-            }).
-            on('click', '.star', function(event) {
-            	favoriteByDom($(this).attr('data-index'), $(this));
-            	event.preventDefault();
-            })
-            .on('click', '.pagination li', function(event) {
-				  var dom = $(this);
-				  var d = dom.find('i');
-				  if(d.length > 0){
-				    if(d[0].innerText == 'chevron_left'){
-				      loadPage(g_page-1);
-				    }else{
-				      loadPage(g_page+1);
-				    }
-				  }else{
-				    loadPage(dom.attr('index'));
-				  }
-				}).
-            on('click', 'th, td:lt(5)', function(){
-                var type;
-                if(this.nodeName == 'TD'){
-                    type = $(this).attr('data-th');
-                }else{
-                    type = this.innerHTML;
+                return a_result;
+            }
+
+            function initData(save=false) {
+                var val = $('input#search').val();
+                if (val == '') {
+                    // 没有搜索,直接加载
+                    loadPage(1, save);
+                } else {
+                    // 等待用户选择项目
+                    $('._content').hide();
+                    searchByKeyword();
                 }
-                switch(type){
+            }
+
+            function submitMessage() {
+                if ($('textarea')[0].value == '') {
+                    $($('.helper-text')[0]).html('empty title').css({
+                        'color': 'red',
+                        'display': ''
+                    });
+                    return;
+                }
+                $($('.helper-text')[0]).hide();
+                if ($('textarea')[1].value == '') {
+                    $($('.helper-text')[1]).html('empty text').css({
+                        'color': 'red',
+                        'display': ''
+                    });
+                    return;
+                }
+                $($('.helper-text')[1]).hide();
+                $('.progress').show();
+
+                $.post('https://neysummer2000-location.glitch.me/report.php', {
+                    title: $('textarea')[0].value,
+                    message: $('textarea')[1].value
+                }, function(data, textStatus, xhr) {
+                    if (textStatus == 'success' && data == 'success') {
+                        M.toast({
+                            html: 'Send Success!'
+                        });
+                        $('#modal1').modal('close');
+                    } else {
+                        alert('Failed To Send!')
+                    }
+                }).always(function() {
+                    $('.progress').hide();
+                });
+            }
+
+            if (a_get['lang'] == undefined) {
+                a_get['lang'] = 'ALL';
+            }
+            $(function() {
+                M.AutoInit();
+                $('textarea').characterCounter();
+                //initFavorite();
+                if (a_get['s'] != undefined) {
+                    $('input#search').val(a_get['s']);
+                    a_get['s'] = '';
+                    window.history.pushState(null, null, "");
+                    openSearch(false);
+                }
+
+                if (localStorage.getItem('data-md5') == g_s_md5) {
+                    g_datas = JSON.parse(localStorage.getItem('data'));
+                    initData(false);
+                } else if (window.location.protocol == 'file:') {
+                    var D = document;
+                    var scriptNode = D.createElement('script');
+                    scriptNode.type = "text/javascript";
+                    scriptNode.src = './js/drawbooks.js';
+                    var targ = D.getElementsByTagName('head')[0] || D.body || D.documentElement;
+                    scriptNode.textContent = '(alert(1))()';
+                    targ.appendChild(scriptNode);
+                    scriptNode.onload = function() {
+                        initData();
+                    }
+                } else {
+                    $.getJSON('./js/drawbooks.json', function(json, textStatus) {
+                        g_datas = json;
+                        initData();
+                    });
+                }
+
+                $(document).on('click', 'tr img', function() {
+                    var d = $(this).parent().parent().parent().find('a.read');
+                    if (d.length > 0)
+                        d[0].click();
+                }).on('click', '#search .collection-item', function() {
+                    closeSearch(false);
+                    toItem($(this))
+                }).on('click', 'tr', function() {
+                    if ($(this).hasClass('search_active')) {
+                        $(this).removeClass('search_active');
+                    }
+
+                }).on('click', '.star', function(event) {
+                    favoriteByDom($(this).attr('data-index'), $(this));
+                    event.preventDefault();
+                }).on('click', '.pagination li', function(event) {
+                    var dom = $(this);
+                    var d = dom.find('i');
+                    if (d.length > 0) {
+                        if (d[0].innerText == 'chevron_left') {
+                            loadPage(g_page - 1);
+                        } else {
+                            loadPage(g_page + 1);
+                        }
+                    } else {
+                        loadPage(dom.attr('index'));
+                    }
+                }).on('click', 'th, td:lt(5)', function() {
+                    var type;
+                    if (this.nodeName == 'TD') {
+                        type = $(this).attr('data-th');
+                    } else {
+                        type = this.innerHTML;
+                    }
+                    switch (type) {
                     case 'Lang':
-                          var h = `
+                        var h = `
                             <div class="modal-content">
                               <h4>Lang</h4>
                                <div class="row">
                                     <form>
                                       <div class="row">
                                       `;
-                          var b;
-                          for(var lang of ['ALL', 'ENGLISH', 'CHINESE', 'JAPANESE']){
+                        var b;
+                        for (var lang of ['ALL', 'ENGLISH', 'CHINESE', 'JAPANESE']) {
                             b = lang == a_get['lang'];
                             h = h + `<p>
                                       <label>
-                                        <input onclick="setLang('`+lang+`');" type="checkbox"`+(b?' checked="checked":':'')+`/>
-                                        <span>`+lang+`</span>
+                                        <input onclick="setLang('` + lang + `');" type="checkbox"` + (b ? ' checked="checked":' : '') + `/>
+                                        <span>` + lang + `</span>
                                       </label>
                                     </p>`;
-                          }
-                          h = h + '</div></form></div></div>';
-                          $('#modal2').html(h).modal('open');
+                        }
+                        h = h + '</div></form></div></div>';
+                        $('#modal2').html(h).modal('open');
                         break;
 
                     case 'ID':
 
-                    break;
-                }
+                        break;
+                    }
+                });
+                getLikeCount();
             });
-	  		getLikeCount();
-        });
 
-        function openNew(url){
-            if(window.newW != undefined) window.newW.close();
-            window.newW = window.open(url, 'newwindow', 'height=1000, width=720, top=1000,left=100, toolbar=no, menubar=no, scrollbars=no, resizable=no,location=no,status=no');
+            function openNew(url) {
+                if (window.newW != undefined)
+                    window.newW.close();
+                window.newW = window.open(url, 'newwindow', 'height=1000, width=720, top=1000,left=100, toolbar=no, menubar=no, scrollbars=no, resizable=no,location=no,status=no');
 
-        }
+            }
 
-        function isFavorited(d){
-        	for(var i=0; i<g_favorite.length;i++){
-        		if(g_favorite[i].title == d.title && g_favorite[i].lang == d.lang){
-        			return i;
-        		}
-        	}
-        	return -1;
-        }
+            function isFavorited(d) {
+                for (var i = 0; i < g_favorite.length; i++) {
+                    if (g_favorite[i].title == d.title && g_favorite[i].lang == d.lang) {
+                        return i;
+                    }
+                }
+                return -1;
+            }
 
-        function favoriteByDom(id, dom = null){
-        	var d = g_datas[id];
-        	var key = isFavorited(d);
+            function favoriteByDom(id, dom=null) {
+                var d = g_datas[id];
+                var key = isFavorited(d);
 
-        	if(key != -1){
-        		g_favorite.splice(key, 1);
-        		dom.html('star_border');
-        	}else{
-        		g_favorite.push(g_datas[id]);
-        		dom.html('star');
-        	}
-			local_saveJson('favorite', g_favorite);
-        }
+                if (key != -1) {
+                    g_favorite.splice(key, 1);
+                    dom.html('star_border');
+                } else {
+                    g_favorite.push(g_datas[id]);
+                    dom.html('star');
+                }
+                local_saveJson('favorite', g_favorite);
+            }
 
-
-
-        function initPage(page){
-        	var start, end;
-   			var i_max_page = parseInt(g_max / g_load)+1;
-        	 if(page == i_max_page){
-                start = i_max_page - 4;
-                if(start <= 0) start = 1;
-                end = i_max_page + 1;
-                b_end = true;
-            }else{
-                start = page - 2;
-                if(start <= 0) start = 1;
-                end = start+5;
-                var b_end = false;
-                if(end > g_max){
+            function initPage(page) {
+                var start, end;
+                var i_max_page = parseInt(g_max / g_load) + 1;
+                if (page == i_max_page) {
+                    start = i_max_page - 4;
+                    if (start <= 0)
+                        start = 1;
+                    end = i_max_page + 1;
                     b_end = true;
-                    end = g_max - 1;
+                } else {
+                    start = page - 2;
+                    if (start <= 0)
+                        start = 1;
+                    end = start + 5;
+                    var b_end = false;
+                    if (end > g_max) {
+                        b_end = true;
+                        end = g_max - 1;
+                    }
                 }
-             }
-            var html = '';
-            for(var i = start; i<end;i++){
-               html = html + `<li index='`+i+`' class="`+(i == page ? 'active' : 'waves-effect')+`"><a href="#!">`+i+`</a></li>`;
-            }
-            if(!b_end){
-                if(i_max_page > 5){
-                     html = html + `<li index='-1' class='waves-effect'><a class='modal-trigger' href="javascript: pageSelecter();">...</a></li>`;
+                var html = '';
+                for (var i = start; i < end; i++) {
+                    html = html + `<li index='` + i + `' class="` + (i == page ? 'active' : 'waves-effect') + `"><a href="#!">` + i + `</a></li>`;
                 }
-               
-                // 最后一页显示
-                 html = html + `<li index='`+i_max_page+`' class="waves-effect"><a href="#!">`+i_max_page+`</a></li>`;
+                if (!b_end) {
+                    if (i_max_page > 5) {
+                        html = html + `<li index='-1' class='waves-effect'><a class='modal-trigger' href="javascript: pageSelecter();">...</a></li>`;
+                    }
 
-            }else{
-                // 把... 换到前面
-                if(i_max_page > 5){
+                    // 最后一页显示
+                    html = html + `<li index='` + i_max_page + `' class="waves-effect"><a href="#!">` + i_max_page + `</a></li>`;
 
-                    html = `<li index='-1' class='waves-effect'><a class='modal-trigger' href="javascript: pageSelecter();">...</a></li>` + html;
+                } else {
+                    // 把... 换到前面
+                    if (i_max_page > 5) {
+
+                        html = `<li index='-1' class='waves-effect'><a class='modal-trigger' href="javascript: pageSelecter();">...</a></li>` + html;
+                    }
                 }
-            }
-            html = `<ul class="pagination center" style="height: 100px;">
-                  <li class="`+(page == 1 ? 'disabled': 'waves-effect')+`"><a href="#!"><i class="material-icons">chevron_left</i></a></li>`+ html+`<li class="`+(b_end ? 'disabled': 'waves-effect')+`"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
+                html = `<ul class="pagination center" style="height: 100px;">
+                  <li class="` + (page == 1 ? 'disabled' : 'waves-effect') + `"><a href="#!"><i class="material-icons">chevron_left</i></a></li>` + html + `<li class="` + (b_end ? 'disabled' : 'waves-effect') + `"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
              </ul>`;
+                $('#_page').html(html);
+            }
 
+            function pageSelecter() {
+                var h = `<div class="modal-content">
+                        <h4 style='text-align: center;'>Choose Page</h4>
+                          <div class="row">
+                          <a href='javascript: pageAdd(-1);' class="waves-effect waves-light btn col s3" style='margin-top: 13px;'><i class="material-icons left">navigate_before</i></a>
+                    <div class="input-field col s6">
+                      <input style='text-align: center;' value="` + g_page + `" id="page_input" type="number" class="validate">
+                      <label class="active" style='text-align: center;'>Page(1 - ` + (parseInt(g_max / g_load) + 1) + `)</label>
+                    </div>
+                <a href='javascript: pageAdd(1);' class="waves-effect waves-light btn col s3" style='margin-top: 13px;'><i class="material-icons right">navigate_next</i></a>
 
-             $('#_page').html(html);
-        }
+                  </div>
+                  <div class="modal-footer">
+                      <a href="javascript: void(0)" onclick='toPage();' class="waves-effect waves-green btn-flat" >Go</a>
+                      <a href="javascript: void(0)" class="modal-close waves-effect waves-red btn-flat">Cancel</a>
+                      </div></div>`;
+                $('#modal2').html(h).modal('open');
+                $('#page_input').keydown(function(event) {
+                    if (event.which == 13) {
+                        toPage();
+                    }
+                });
+            }
 
-        function pageSelecter(){
-        	 var h = `<div class="modal-content">
-                <h4 style='text-align: center;'>Choose Page</h4>
-                  <div class="row">
-                  <a href='javascript: pageAdd(-1);' class="waves-effect waves-light btn col s3" style='margin-top: 13px;'><i class="material-icons left">navigate_before</i></a>
-				    <div class="input-field col s6">
-				      <input style='text-align: center;' value="`+g_page+`" id="page_input" type="number" class="validate">
-				      <label class="active" style='text-align: center;'>Page(1 - `+(parseInt(g_max / g_load)+1)+`)</label>
-				    </div>
-				<a href='javascript: pageAdd(1);' class="waves-effect waves-light btn col s3" style='margin-top: 13px;'><i class="material-icons right">navigate_next</i></a>
+            function pageAdd(add) {
+                var page = parseInt($('#page_input').val()) + add;
+                var max_page = +parseInt(g_max / g_load) + 1;
+                if (page > max_page) {
+                    page = max_page;
+                } else if (page <= 0) {
+                    page = 1;
+                }
+                $('#page_input').val(page);
+            }
 
-				  </div>
-				  <div class="modal-footer">
-		          <a href="javascript: void(0)" onclick='toPage();' class="waves-effect waves-green btn-flat" >Go</a>
-		          <a href="javascript: void(0)" class="modal-close waves-effect waves-red btn-flat">Cancel</a>
-		          </div></div>`;
-            $('#modal2').html(h).modal('open');
-            $('#page_input').keydown(function(event) {
-            	if(event.which == 13){
-            		toPage();
-            	}
-            });
-        }
+            function toPage() {
+                var page = parseInt($('#page_input').val());
+                var max_page = +parseInt(g_max / g_load) + 1;
+                if (page > max_page) {
+                    //$('#modal2 h4').html('error page number!');
+                    $('#modal2 input').addClass('input_error');
+                } else {
+                    loadPage(page);
+                    M.Modal.getInstance($('#modal2')).close();
+                }
+            }
 
-        function pageAdd(add){
-        	var page = parseInt($('#page_input').val()) + add;
-        	var max_page = +parseInt(g_max / g_load)+1;
-        	if(page > max_page){
-        		page = max_page;
-        	}else
-        	if(page <= 0){
-        		page = 1;
-        	}
-        	$('#page_input').val(page);
-        }
+            function loadPage(page, savemd5=false) {
+                if (savemd5) {
+                    localStorage.setItem('data-md5', g_s_md5);
+                    localStorage.setItem('data', JSON.stringify(g_datas));
+                }
+                if (g_max == -1) {
+                    g_max = g_datas.length;
+                }
+                var id = 0;
+                var i_max_page = parseInt(g_max / g_load) + 1;
+                if (page > 0 && page <= i_max_page) {
+                    g_page = page;
+                    toTop();
 
-        function toPage(){
-        	var page = parseInt($('#page_input').val());
-        	var max_page = +parseInt(g_max / g_load)+1;
-        	if(page > max_page){
-        		//$('#modal2 h4').html('error page number!');
-        		$('#modal2 input').addClass('input_error');
-        	}else{
-        		loadPage(page);
-        		M.Modal.getInstance($('#modal2')).close();
-        	}
-        }
+                    var d;
+                    var start, end;
+                    start = (page - 1) * g_load;
+                    if (start < 0)
+                        start = 0;
+                    end = start + g_load;
+                    if (end > g_max)
+                        end = g_max - 1;
 
-    function loadPage(page, savemd5 = false){
-    	if(savemd5){
-          localStorage.setItem('data-md5', g_s_md5);
-          localStorage.setItem('data', JSON.stringify(g_datas));
-    	}
-    	if(g_max == -1){
-           g_max = g_datas.length;
-    	}
-
-        //$('tr:gt(1)').remove();
-        var id = 0;
-        var i_max_page = parseInt(g_max / g_load)+1;
-    	if(page > 0 && page <= i_max_page){
-        	g_page = page;
-         	toTop();
-    		
-    		var d;
-	        var start, end;
-            start = (page - 1) * g_load;
-            if(start < 0) start = 0;
-            end = start + g_load;
-            if(end > g_max) end = g_max - 1;
-
-             var h = `
+                    var h = `
               <table id="table-two-axis" class="two-axis" style="display: none; margin-top: 50px;">
-		            <thead>
-		              <tr>
-		                <th>Book</th>
-		                <th></th>
-		                <th>Lang</th>
-		                <th>Size</th>
-		                <th>Action</th>
-		                <th>Backup</th>
-		              </tr>
-		            </thead>
-		            <tbody>
-		              <tr>
-		                <td></td>
-		                <td></td>
-		                <td>
-		                    <select id='#lang_select'>
-		                      <option value="" disabled selected>ALL</option>
-		                      <option value="1">ENGLISH</option>
-		                      <option value="2">JAPANESE</option>
-		                      <option value="3">CHINESE</option>
-		                    </select>
-		                </td>
-		                <td></td>
-		                <td></td>
-		                <td></td>
-		              </tr>`;
-            for(var id = start; id <= end; id++){
-            	d = g_datas[id];
-            	 if(a_get['lang'] != 'ALL' && d.lang != a_get['lang']) continue;
-	             h = h +  `<tr key=`+id+`>
-	             <td>
-	             <i data-index=`+id+` class="material-icons right star">`+(isFavorited(d)==-1?'star_border':'star') +`</i>
-	             <span class='_id'>`+(id+1)+`</span><img data-src="`+d.img+`" class='lazyload'></td>
-	                <td><a target="_blank" href="https://www.google.com/search?q=`+d.title+`">`+d.title+`</a></td>
-	                
-	                <td>`+d.lang+`</td>`;
+                <thead>
+                  <tr>
+                    <th style='width: 100px; !important'>Book</th>
+                    <th></th>
+                    <th>Lang</th>
+                    <th>Size</th>
+                    <th>Action</th>
+                    <th>Backup</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <select id='#lang_select'>
+                          <option value="" disabled selected>ALL</option>
+                          <option value="1">ENGLISH</option>
+                          <option value="2">JAPANESE</option>
+                          <option value="3">CHINESE</option>
+                        </select>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>`;
+                    for (var id = start; id <= end; id++) {
+                        d = g_datas[id];
+                        if (a_get['lang'] != 'ALL' && d.lang != a_get['lang'])
+                            continue;
+                        h = h + `<tr key=` + id + `>
+               <td>
+               <i data-index=` + id + ` class="material-icons right star">` + (isFavorited(d) == -1 ? 'star_border' : 'star') + `</i>
+               <span class='_id'>` + (id + 1) + `</span><img data-src="` + d.img + `" class='lazyload'></td>
+                  <td><a target="_blank" href="https://www.google.com/search?q=` + d.title + `">` + d.title + `</a></td>
+                  
+                  <td>` + d.lang + `</td>`;
 
-	             if(d.online != undefined){
-	                h = h +  `<td>`+formatFileSize(d.online.size)+`</td>`;
-	                h = h +  `<td class='_action'><a class='read' href="javascript:openNew('https://neysummer2000-location.glitch.me/?id=`+d.online.id+`&title=`+ encodeURI(d.title)+`')">readOnline</a>&nbsp;&nbsp;&nbsp;<a class='copy_btn' href="javascript: void(0)" data-clipboard-text="http://pan-yz.chaoxing.com/download/downloadfile?fleid=`+d.online.id+`&puid=142588570">directDownload</a></td>`;
-	            }else{
-	                 h = h +  `<td></td><td></td>`;
-	            }
+                        if (d.online != undefined) {
+                            h = h + `<td>` + formatFileSize(d.online.size) + `</td>`;
+                            h = h + `<td class='_action'><a class='read' href="javascript:openNew('https://neysummer2000-location.glitch.me/?id=` + d.online.id + `&title=` + encodeURI(d.title) + `')">readOnline</a>&nbsp;&nbsp;&nbsp;<a class='copy_btn' href="javascript: void(0)" data-clipboard-text="http://pan-yz.chaoxing.com/download/downloadfile?fleid=` + d.online.id + `&puid=142588570">directDownload</a></td>`;
 
-	             h = h + '<td>';
-	            for(var i=0;i<d.link.length;i++){
-	                if(d.link[i].indexOf('提取码') === -1){
-	                 h = h + '<a target="_blank" href="'+d.link[i]+'">'+(i+1)+'.download</a>';
-	                }else{
-	                 h = h + d.link[i];
-	                }
-	                h = h + '     ';
-	            }
-	           
-	            h = h + '</td></tr>';
-            }
-            h = h + '</tbody></table>'
-        $('.preloader-wrapper').hide();
-        $('select').val(a_get['lang']);
-        $('#_table_show').html(h);
-        $(".lazyload").lazyload({effect: "fadeIn"});
-        $('#table-two-axis').show().basictable();
-       
-       initCopyDom('.copy_btn');
-    	initPage(page);
-    }}
+                        } else {
+                            h = h + `<td></td><td></td>`;
+                        }
 
-    var g_clipboard;
-    function initCopyDom(selecter){
-    	if(g_clipboard != undefined){
-    		g_clipboard.destroy();    
-    	}
-    	g_clipboard = new Clipboard(selecter);
-		g_clipboard.on('success', function(e) {
-		    e.clearSelection();
-		    alert('Copied The Download URL!');
-		});
-		g_clipboard.on('error', function(e) {
-		    alert($(e.trigger).attr('data-clipboard-text'));
-		});
-    }
+                        h = h + '<td>';
+                        for (var i = 0; i < d.link.length; i++) {
+                            if (d.link[i].indexOf('提取码') === -1) {
+                                h = h + '<a target="_blank" href="' + d.link[i] + '">' + (i + 1) + '.download</a>';
+                            } else {
+                                h = h + d.link[i];
+                            }
+                            h = h + '&nbsp;&nbsp;';
+                        }
 
-    function formatFileSize(fileSize) {
-    if (fileSize < 1024) {
-        return fileSize + 'B';
-    } else if (fileSize < (1024*1024)) {
-        var temp = fileSize / 1024;
-        temp = temp.toFixed(2);
-        return temp + 'KB';
-    } else if (fileSize < (1024*1024*1024)) {
-        var temp = fileSize / (1024*1024);
-        temp = temp.toFixed(2);
-        return temp + 'MB';
-    } else {
-        var temp = fileSize / (1024*1024*1024);
-        temp = temp.toFixed(2);
-        return temp + 'GB';
-    }
-}
-
-
-    </script>
-    <script type="text/javascript">
-      function openComment(){
-         /*var h = `<div class="modal-content">
-                <h4>Loading Comments...</h4>
-                 <div class="progress">
-                    <div class="indeterminate"></div>
-                </div>
-                 <div class="row">
-                 <form>
-
-                 </form></div><div class="modal-footer">
-          <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
-          </div></div>`;
-            $('#modal_comment').html(h).modal('open');
-
-            setTimeout(function(){
-              var data = [
-              {
-                  message: 'a',
-                  date: '2020年7月31日 23点24分'
+                        h = h + '</td></tr>';
+                    }
+                    h = h + '</tbody></table>'
+                    $('.preloader-wrapper').hide();
+                    $('select').val(a_get['lang']);
+                    $('#_table_show').html(h);
+                    $(".lazyload").lazyload({
+                        effect: "fadeIn"
+                    });
+                    $('#table-two-axis').show().basictable();
+                    // 为可以预览的文件加上鼠标手势
+                    $('td._action').parent().find('img').css('cursor', 'pointer');
+                    initCopyDom('.copy_btn');
+                    initPage(page);
                 }
-              ];
+            }
 
-              h = '<ul class="collection">';
-              for(var d of data){
+            var g_clipboard;
+            function initCopyDom(selecter) {
+                if (g_clipboard != undefined) {
+                    g_clipboard.destroy();
+                }
+                g_clipboard = new Clipboard(selecter);
+                g_clipboard.on('success', function(e) {
+                    e.clearSelection();
+                    alert('Copied The Download URL!');
+                });
+                g_clipboard.on('error', function(e) {
+                    alert($(e.trigger).attr('data-clipboard-text'));
+                });
+            }
 
-                h = h + `<li class="collection-item avatar">
-                  <img src="images/yuna.jpg" alt="" class="circle">
-                  <span class="title">Title</span>
-                  <p>First Line <br>
-                     Second Line
-                  </p>
-                  <a href="#!" class="secondary-content"><i class="material-icons">reply</i></a>
-                </li>`;
-                
-              }
-              $('#modal_comment').find('.progress').hide().
-                 find('h4').html('Comments').
-                 find('.row').append($(h+'</ul>'));
-            }, 2000);*/
-            
-      }
+            function formatFileSize(fileSize) {
+                if (fileSize < 1024) {
+                    return fileSize + 'B';
+                } else if (fileSize < (1024 * 1024)) {
+                    var temp = fileSize / 1024;
+                    temp = temp.toFixed(2);
+                    return temp + 'KB';
+                } else if (fileSize < (1024 * 1024 * 1024)) {
+                    var temp = fileSize / (1024 * 1024);
+                    temp = temp.toFixed(2);
+                    return temp + 'MB';
+                } else {
+                    var temp = fileSize / (1024 * 1024 * 1024);
+                    temp = temp.toFixed(2);
+                    return temp + 'GB';
+                }
+            }
 
-        function setLang(lang){
-            window.location.href = './index.html?lang='+lang;
-        }
-    	
-        function openSearch(hide = true){
-              //$('#search .collection').html('');
+            function setLang(lang) {
+                window.location.href = './index.html?lang=' + lang;
+            }
 
-              $('.navbar-fixed').hide();
-              $('#search').show();
-              if(hide){
-	          		hideContent();
-	          	}
-	         $(document).scrollTop(0);
-              setTimeout(function() {
-              	//$('#search input').focus(); // 移动端弹出输入法会造成文档改变大小从而导致卡顿
-              }, 1000);
-        }
+            function openSearch(hide=true) {
+                //$('#search .collection').html('');
 
-        function hideContent(){
-           $('._content').hide();
-        }
+                $('.navbar-fixed').hide();
+                $('#search').show();
+                if (hide) {
+                    hideContent();
+                }
+                $(document).scrollTop(0);
+                setTimeout(function() {//$('#search input').focus(); // 移动端弹出输入法会造成文档改变大小从而导致卡顿
+                }, 1000);
+            }
 
-        function showContent(){
-           $('._content').show();
-        }
+            function hideContent() {
+                $('._content').hide();
+            }
 
-        function closeSearch(reset = true){
-              $('.navbar-fixed').show();
-              $('#search').hide();
-              if(reset){
-              	$('input#search').val('');
-              	$('#search .collection').html('');
-              	$('#search_res').html('');
-              }
-              showContent();
-        }
+            function showContent() {
+                $('._content').show();
+            }
 
-        function toTop(){
-    		$('html,body').animate({ scrollTop: 0 }, 500);
-        }
+            function closeSearch(reset=true) {
+                $('.navbar-fixed').show();
+                $('#search').hide();
+                if (reset) {
+                    $('input#search').val('');
+                    $('#search .collection').html('');
+                    $('#search_res').html('');
+                }
+                showContent();
+            }
 
-        function toPageEnd(){
-    		$('html,body').animate({ scrollTop: $(this).height() }, 500);
-        }
+            function toTop() {
+                $('html,body').animate({
+                    scrollTop: 0
+                }, 500);
+            }
 
-        function searchByKeyword(){
-           var s = $('#search input').val();
-           var html = '';
-           var page;
-           var c = 0;
-           if(s != ''){
-              var k = 0;
-              for(var json of g_datas){
-                page = parseInt(k / g_load) + 1;
-                var i_s = json.title.indexOf(s);
-                if(i_s !== -1){
-                	c++;
-                  html = html + `<li class="collection-item avatar z-depth-2 waves-effect block" style='width: 100%;color: black;' key='`+k+`' page=`+page+`>
-                    <img data-src="`+json.img+`" class="lazyload">
-                    <div class="title">`+json.title.replace(s, '<span style="color: red">'+s+'</span>')+`</div>
-                    <br>`+(json.online != undefined ? '<div class="chip">'+formatFileSize(json.online.size)+`</div>`:'')+`<div class="chip `+getColorByLang(json.lang)+` white-text">`+json.lang+`</div>
+            function toPageEnd() {
+                $('html,body').animate({
+                    scrollTop: $(this).height()
+                }, 500);
+            }
+
+            function searchByKeyword() {
+                var s = $('#search input').val();
+                var html = '';
+                var page;
+                var c = 0;
+                if (s != '') {
+                    var k = 0;
+                    for (var json of g_datas) {
+                        page = parseInt(k / g_load) + 1;
+                        var i_s = json.title.indexOf(s);
+                        if (i_s !== -1) {
+                            c++;
+                            html = html + `<li class="collection-item avatar z-depth-2 waves-effect block" style='width: 100%;color: black;' key='` + k + `' page=` + page + `>
+                    <img data-src="` + json.img + `" class="lazyload">
+                    <div class="title">` + json.title.replace(s, '<span style="color: red">' + s + '</span>') + `</div>
+                    <br>` + (json.online != undefined ? '<div class="chip">' + formatFileSize(json.online.size) + `</div>` : '') + `<div class="chip ` + getColorByLang(json.lang) + ` white-text">` + json.lang + `</div>
                     </p></li>`;
+                        }
+                        k++;
+                    }
                 }
-                k++;
-              }
-           }
-           if(c==0){
-           		 html = html + '<h1 style="display: block; text-align: center">Nothing Found...</h1>';
-           }
-           $('#search_res').html(c+' results');
-            $('#search .collection').html(html);
-            $(".lazyload").lazyload({effect: "fadeIn"});
-        }
-
-        function getColorByLang(lang){
-            if(lang == 'JAPANESE'){
-                return 'green';
-            }else
-            if(lang == 'CHINESE'){
-                return 'red';
-            }else{
-                return 'blue';
+                if (c == 0) {
+                    html = html + '<h1 style="display: block; text-align: center">Nothing Found...</h1>';
+                }
+                $('#search_res').html(c + ' results');
+                $('#search .collection').html(html);
+                $(".lazyload").lazyload({
+                    effect: "fadeIn"
+                });
             }
-        }
 
-         function toItem(dom){
-            $('.search_active').removeClass('search_active');
-         	var index = dom.attr('key');
-         	var page = dom.attr('page');
-         	if(page != g_page){
-         		loadPage(page);
-         	}
-         	setTimeout(function(){
-         		var find = $('tr[key='+index+']');
-         		if(find.length > 0){
-         			find.addClass('search_active');
-	          	  $(document).scrollTop(find.offset().top - $(this).height() / 2);
-         		}
-         	}, 500);
-        }
-    </script>
-</body>
+            function getColorByLang(lang) {
+                if (lang == 'JAPANESE') {
+                    return 'green';
+                } else if (lang == 'CHINESE') {
+                    return 'red';
+                } else {
+                    return 'blue';
+                }
+            }
+
+            function toItem(dom) {
+                $('.search_active').removeClass('search_active');
+                var index = dom.attr('key');
+                var page = dom.attr('page');
+                if (page != g_page) {
+                    loadPage(page);
+                }
+                setTimeout(function() {
+                    var find = $('tr[key=' + index + ']');
+                    if (find.length > 0) {
+                        find.addClass('search_active');
+                        $(document).scrollTop(find.offset().top - $(this).height() / 2);
+                    }
+                }, 500);
+            }
+        </script>
+    </body>
 </html>

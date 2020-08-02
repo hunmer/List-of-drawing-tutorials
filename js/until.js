@@ -58,7 +58,7 @@ function initFavorite(){
         <img class="activator" src="`+d.img+`">
       </div>
       <div class="card-content">
-        <span class="activator grey-text text-darken-4">`+d.title+`<i class="material-icons right bottom" onclick='closeCardrevea();'>more_vert</i></span>
+        <span class="activator grey-text text-darken-4" style=' cursor: pointer;'>`+d.title+`<i class="material-icons right bottom" onclick='closeCardrevea();'>more_vert</i></span>
       </div>
       <div class="card-reveal">
         <span class="card-title grey-text text-darken-4" style="margin-bottom: 17px;">`+d.title+`<i class="material-icons right">close</i></span>
