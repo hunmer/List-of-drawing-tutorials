@@ -5,7 +5,7 @@
 	}else{
 		$json = json_decode(file_get_contents('like.json'), true);
 	}
-	$ip = getIp();
+	$ip = getString_left(getIp(), ',');
 	$unknown = $ip == '' || $ip == null;
 	if(!$unknown){
 		switch($_POST['s']){
@@ -27,7 +27,7 @@
 
 		}
 	}
-	echo json_encode([ip => getString_left($ip, ','), count => 20 + count($json), liked => !$unknown && isset($json[$ip]) ? 1 : 0]);
+	echo json_encode([ip => $ip, count => 20 + count($json), liked => !$unknown && isset($json[$ip]) ? 1 : 0]);
 	exit();
 	
 function getString_left($s_text, $s_search){
