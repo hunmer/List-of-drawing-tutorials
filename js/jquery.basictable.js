@@ -117,7 +117,7 @@
       $('td[data-th=ID] .bt-content').css('width', '100%').css('width', '-=130px');
       var a = $("td[data-th='Book']").attr('data-th', '').addClass('_book');
       $('.star').css({
-          marginTop: '16px',
+          marginTop: '20px',
           left: '',
           right: '7px'
       });
@@ -137,7 +137,7 @@
       $('._book').attr('data-th', 'Book').removeClass('_book');
       $('._id').attr('data-th', 'ID').removeClass('_id');
       $('.star').css({
-          marginTop: '20px',
+          marginTop: '25px',
           left: '0px'
       });
       if (data.tableWrap) {
