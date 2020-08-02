@@ -3,6 +3,18 @@ var g_favorite = local_readJson('favorite', []);
 var g_config = local_readJson('config', {
 
 });
+var count = parseInt(getLocalItem('likeCount', 100));
+$('#like_btn span').html(count);
+updateStatus();
+
+  function updateStatus(){
+      if(parseInt(getLocalItem('isLiked', 0)) == 1){
+        $('#like_btn i').css('cssText', 'color: red!important');
+      }else{
+        $('#like_btn i').css('cssText', '');
+      }
+    }
+
 function local_saveJson(key, data) {
     if (window.localStorage) {
         key = 'vm_' + key;    // 添加前缀，防止串用

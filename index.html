@@ -48,10 +48,10 @@
    <div class="navbar-fixed">
     <nav class="nav-extended">
     <div class="nav-wrapper">
-      <a href="javascript:$('.sidenav').sidenav('open');" class="brand-logo logo">List of drawing tutorials(1380)</a>
+      <a href="javascript:$('.sidenav').sidenav('open');" class="brand-logo logo" style="width: fit-content;">List of drawing tutorials(1380)</a>
       <a href="javascript:void(0)" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
       <a href="javascript:void(0)" onclick="openSearch();" class="right mr"><i class="material-icons">search</i></a>
-      <!-- <a href="javascript:void(0)" onclick="openComment();" class="right mr"><i class="material-icons">comment</i></a> -->
+      <a href="javascript:void(0)" id='like_btn' onclick="likeSite();" class="right mr" style="display: flex; padding-left: 10px;"><i class="material-icons">favorite</i><span style="color: white; margin-left: 2px;">100</span></a>
     </div>
     <div class="nav-content">
       <ul class="tabs tabs-transparent">
@@ -210,11 +210,43 @@
 
       window.history.pushState(null, null, "#");
 	   window.addEventListener("popstate", function(event) {
-	      window.history.pushState(null, null, "#");
-	      event.preventDefault(true);
-	      
+	      if($('#test2').hasClass('active')){
+	      	$('.tab a')[0].click()
+	      	window.history.pushState(null, null, "");
+	      	event.preventDefault(true);
+	      }
 	   });
 
+	  function likeSite(){
+	  	var isLike = parseInt(getLocalItem('isLiked', 0)) == 1;
+	  	var likeCount = parseInt($('#like_btn span').html());
+	  	if(isLike){
+	  		likeCount--;
+	  		$('#like_btn i').css('cssText', '');
+	  		setLocalItem('isLiked', 0);
+	  	}else{
+	  		likeCount++;
+	  		$('#like_btn i').css('cssText', 'color: red!important');
+	  		setLocalItem('isLiked', 1);
+	  	}
+	  	updateStatus();
+	  	getLikeCount({s: isLike ? '0' : '1'});
+	  	$('#like_btn span').html(likeCount);
+	  }
+
+	  function getLikeCount(params = {}){
+	  	//var api = './php/like.php';
+	  	var api ='https://neysummer2000-location.glitch.me/like.php',
+	  	 $.post(api, params, function(data, textStatus, xhr) {
+	  	 	data = JSON.parse(data);
+	  	 	if(data != undefined){
+	  	 		$('#like_btn span').html(data.count);
+		  		setLocalItem('likeCount', parseInt(data.count));
+		  		setLocalItem('isLiked', parseInt(data.liked));
+		  		updateStatus();
+	  	 	}
+         });
+	  }
 
      function getGETArray(){
         var a_result = [], a_exp;
@@ -275,6 +307,7 @@
             if(a_get['s'] != undefined){
             	$('input#search').val(a_get['s']);
         		a_get['s'] = '';
+	      		window.history.pushState(null, null, "");
             	openSearch(false);
             }
 
@@ -366,6 +399,7 @@
                     break;
                 }
             });
+	  		getLikeCount();
         });
 
         function openNew(url){

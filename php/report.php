@@ -1,4 +1,5 @@
 <?php
+	header('Access-Control-Allow-Origin: *');
 	$title = $_POST['title'];
 	$message = $_POST['message'];
 	if($title != '' && $message != ''){
