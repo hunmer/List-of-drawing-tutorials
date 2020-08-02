@@ -51,7 +51,7 @@
       <a href="javascript:$('.sidenav').sidenav('open');" class="brand-logo logo" style="width: fit-content;">List of drawing tutorials(1380)</a>
       <a href="javascript:void(0)" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
       <a href="javascript:void(0)" onclick="openSearch();" class="right mr"><i class="material-icons">search</i></a>
-      <a href="javascript:void(0)" id='like_btn' onclick="likeSite();" class="right mr" style="display: flex; padding-left: 10px;"><i class="material-icons">favorite</i><span style="color: white; margin-left: 2px;">100</span></a>
+      <a href="javascript:void(0)" id='like_btn' onclick="likeSite();" class="right mr" style="display: flex; padding-left: 10px;"><i class="material-icons">favorite</i><span style="color: white; margin-left: 2px;">0</span></a>
     </div>
     <div class="nav-content">
       <ul class="tabs tabs-transparent">
@@ -236,7 +236,7 @@
 
 	  function getLikeCount(params = {}){
 	  	//var api = './php/like.php';
-	  	var api ='https://neysummer2000-location.glitch.me/like.php',
+	  	var api ='https://neysummer2000-location.glitch.me/like.php';
 	  	 $.post(api, params, function(data, textStatus, xhr) {
 	  	 	data = JSON.parse(data);
 	  	 	if(data != undefined){
