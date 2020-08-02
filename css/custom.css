@@ -60,7 +60,8 @@ nav i{
 
 .bt-content span {
     display: block;
-    text-align: center;
+    padding-left: 38px;
+    font-size: 15px;
 }
 
 ._id {
