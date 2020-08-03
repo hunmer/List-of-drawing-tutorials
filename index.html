@@ -391,8 +391,8 @@
 
                       case 'search':
                         g_b_searchInFavorite = true;
-                        $('#search').attr('data-favorite', 1);
-                        openSearch(true);
+                        $('#search').attr('data-favorite', '1');
+                        openSearch(true, true);
                         break;
 
                       break;
@@ -698,21 +698,21 @@
                 window.location.href = './index.html?lang=' + lang;
             }
 
-            function openSearch(hide=true) {
-                if($('#search').attr('data-favorite') == 1){
-                  $('#search').attr('data-favorite', null)
-                  $('#search .collection').html('');
-                  $('#search_res').html('');
-                }
+            function openSearch(hide=true, clear = false) {
+              if(clear){
+                 $('#search .collection').html('');
+                 $('#search_res').html('');
+                 $('#search input').val('');
+              }
                 $('.navbar-fixed').hide();
                 $('#search').show();
                 if (hide) {
                     hideContent();
                 }
                 $(document).scrollTop(0);
-                setTimeout(function() {
-                //$('#search input').focus(); // 移动端弹出输入法会造成文档改变大小从而导致卡顿
-                }, 1000);
+                // setTimeout(function() {
+                // //$('#search input').focus(); // 移动端弹出输入法会造成文档改变大小从而导致卡顿
+                // }, 1000);
             }
 
             function hideContent() {
@@ -724,7 +724,12 @@
             }
 
             function closeSearch(reset=true) {
-               
+                if($('#search').attr('data-favorite') != undefined){
+                  $('#search').attr('data-favorite', null)
+                  $('#search .collection').html('');
+                  $('#search_res').html('');
+                  $('#search input').val('');
+                }
                 $('.navbar-fixed').show();
                 $('#search').hide();
                 if (reset) {
@@ -770,7 +775,7 @@
                     for (var i=0; i<datas.length;i++) {
                         json = datas[i];
                         page = parseInt(i / g_load) + 1;
-                        k = b_isFitler ? g_keys[i] : i;
+                        k = b_isFitler && !g_b_searchInFavorite ? g_keys[i] : i;
                         var i_s = json.title.indexOf(s);
                         if (i_s !== -1) {
                             c++;
@@ -807,9 +812,7 @@
                 $('.search_active').removeClass('search_active');
                 var index = dom.attr('key');
                 var page = dom.attr('page');
-                if (page != g_page) {
-                    loadPage(page);
-                }
+                
                 setTimeout(function() {
                   var find;
                     if(g_b_searchInFavorite){
@@ -825,16 +828,22 @@
                           $('.tab a')[0].click()
                         }
                       }
-                     if(g_b_searchInFavorite){
-                        find = $('.card[key=' + index + ']');
-                      }else{
-                        find = $('tr[key=' + index + ']');
+                      if (page != g_page) {
+                          loadPage(page);
                       }
-                    if (find.length > 0) {
-                      g_b_searchInFavorite = false;
-                       find.addClass('search_active');
-                        $(document).scrollTop(find.offset().top - $(this).height() / 2);
-                    }
+                      setTimeout(function(){
+                        if(g_b_searchInFavorite){
+                            find = $('.card[key=' + index + ']');
+                          }else{
+                            find = $('tr[key=' + index + ']');
+                          }
+                        if (find.length > 0) {
+                          g_b_searchInFavorite = false;
+                           find.addClass('search_active');
+                            $(document).scrollTop(find.offset().top - $(this).height() / 2);
+                        }
+                      }, 500);
+                     
                 }, 500);
             }
         </script>
