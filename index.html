@@ -324,7 +324,7 @@
                     }
 
                 }).on('click', '.star', function(event) {
-                    favoriteByDom($(this).attr('data-index'), $(this));
+                    favoriteByDom($(this).parent().parent().parent().attr('key'), $(this));
                     event.preventDefault();
                 }).on('click', '.pagination li', function(event) {
                     var dom = $(this);
@@ -345,7 +345,6 @@
                     } else {
                         type = this.innerHTML;
                     }
-                    console.log(type);
                     switch (type) {
                     case 'Lang':
                         var h = `
@@ -400,6 +399,7 @@
 
                   }
                 });
+                getLikeCount();
             });
 
             function downloadData(d){
@@ -463,7 +463,6 @@
                     }
                 }
                 var html = '';
-                console.log(start, end);
                 for (var i = start; i < end; i++) {
                     html = html + `<li index='` + i + `' class="` + (i == page ? 'active' : 'waves-effect') + `"><a href="#!">` + i + `</a></li>`;
                 }
@@ -533,28 +532,30 @@
                 }
             }
 
+             var g_list = [];
+             var g_keys = [];
             function loadPage(page, savemd5=false) {
                 if (savemd5) {
                     localStorage.setItem('data-md5', g_s_md5);
                     localStorage.setItem('data', JSON.stringify(g_datas));
                 }
 
-                var datas = [];
-                g_max = 0;
-                if(a_get['lang'] != 'ALL'){
-                  for(var d of g_datas){
-                     if(d.lang != a_get['lang']) continue;
-                     g_max++;
-                     datas.push(d);
+                if(g_list.length === 0){
+                  g_max = 0;
+                  if(a_get['lang'] != 'ALL'){
+                    for(var i=0;i<g_datas.length;i++){
+                       if(g_datas[i].lang != a_get['lang']) continue;
+                       g_list.push(g_datas[i]);
+                       g_keys.push(i);
+                    }
+                  }else{
+                    g_list = g_datas;
                   }
-                }else{
-                  g_max = g_datas.length;
-                  datas = g_datas;
+                  g_max = g_list.length;
                 }
-               
+
                 var id = 0;
                 g_max_page = parseInt(g_max / g_load);
-                console.log(g_max_page);
                 if (page > 0 && page <= g_max_page) {
                     g_page = page;
                     toTop();
@@ -596,10 +597,20 @@
                     <td></td>
                     <td></td>
                   </tr>`;
+
+                  var key;
                     for (var id = start; id < end; id++) {
-                        d = datas[id];
+                        d = g_list[id];
+
+                        // 数据里的主键
+                        if(id < g_keys.length){
+                          key = g_keys[id];
+                        }else{
+                          key = id;
+                        }
+
                         if (a_get['lang'] != 'ALL' && d.lang != a_get['lang']) continue;
-                        h = h + `<tr key=` + id + `>
+                        h = h + `<tr key=` + key + `>
                <td>
                <i data-index=` + id + ` class="material-icons right star">` + (isFavorited(d) == -1 ? 'star_border' : 'star') + `</i>
                <span class='_id'>` + (id + 1) + `</span><img data-src="` + d.img + `" class='lazyload'></td>
@@ -644,7 +655,7 @@
                     $('td:eq(2)').css({
                       'font-size': '20px',
                       'cursor': 'pointer'
-                    }).html('filter');
+                    }).html(a_get['lang']);
                     initCopyDom('.copy_btn');
                     initPage(page);
                 }
@@ -745,15 +756,21 @@
                 var page;
                 var c = 0;
                 var datas;
+                var k;
+                var json;
+
+                var b_isFitler = g_keys.length > 0;
                 if (s != '') {
                   if(g_b_searchInFavorite){
                     datas = g_favorite;
                   }else{
-                    datas = g_datas;
+                    datas =  b_isFitler ? g_list : g_datas; // 语言筛选
                   }
-                    var k = 0;
-                    for (var json of datas) {
-                        page = parseInt(k / g_load) + 1;
+                    
+                    for (var i=0; i<datas.length;i++) {
+                        json = datas[i];
+                        page = parseInt(i / g_load) + 1;
+                        k = b_isFitler ? g_keys[i] : i;
                         var i_s = json.title.indexOf(s);
                         if (i_s !== -1) {
                             c++;
