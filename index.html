@@ -173,6 +173,7 @@
             var g_max = -1;
             var g_page = 0;
             var g_b_searchInFavorite = false;
+            var g_max_page = 0;
 
             window.history.pushState(null, null, "#");
             window.addEventListener("popstate", function(event) {
@@ -344,8 +345,9 @@
                     } else {
                         type = this.innerHTML;
                     }
+                    console.log(type);
                     switch (type) {
-                    case 'filter':
+                    case 'Lang':
                         var h = `
                             <div class="modal-content">
                               <h4>Lang</h4>
@@ -443,12 +445,11 @@
 
             function initPage(page) {
                 var start, end;
-                var i_max_page = parseInt(g_max / g_load);
-                if (page == i_max_page) {
-                    start = i_max_page - 4;
+                if (page == g_max_page) {
+                    start = g_max_page - 4;
                     if (start <= 0)
                         start = 1;
-                    end = i_max_page + 1;
+                    end = g_max_page + 1;
                     b_end = true;
                 } else {
                     start = page - 2;
@@ -462,20 +463,21 @@
                     }
                 }
                 var html = '';
+                console.log(start, end);
                 for (var i = start; i < end; i++) {
                     html = html + `<li index='` + i + `' class="` + (i == page ? 'active' : 'waves-effect') + `"><a href="#!">` + i + `</a></li>`;
                 }
                 if (!b_end) {
-                    if (i_max_page > 5) {
+                    if (g_max_page > 5) {
                         html = html + `<li index='-1' class='waves-effect'><a class='modal-trigger' href="javascript: pageSelecter();">...</a></li>`;
                     }
 
                     // 最后一页显示
-                    html = html + `<li index='` + i_max_page + `' class="waves-effect"><a href="#!">` + i_max_page + `</a></li>`;
+                    html = html + `<li index='` + g_max_page + `' class="waves-effect"><a href="#!">` + g_max_page + `</a></li>`;
 
                 } else {
                     // 把... 换到前面
-                    if (i_max_page > 5) {
+                    if (g_max_page > 5) {
 
                         html = `<li index='-1' class='waves-effect'><a class='modal-trigger' href="javascript: pageSelecter();">...</a></li>` + html;
                     }
@@ -512,9 +514,8 @@
 
             function pageAdd(add) {
                 var page = parseInt($('#page_input').val()) + add;
-                var max_page = parseInt(g_max / g_load);
-                if (page > max_page) {
-                    page = max_page;
+                if (page > g_max_page) {
+                    page = g_max_page;
                 } else if (page <= 0) {
                     page = 1;
                 }
@@ -523,8 +524,7 @@
 
             function toPage() {
                 var page = parseInt($('#page_input').val());
-                var max_page = parseInt(g_max / g_load);
-                if (page > max_page) {
+                if (page > g_max_page) {
                     //$('#modal2 h4').html('error page number!');
                     $('#modal2 input').addClass('input_error');
                 } else {
@@ -538,12 +538,24 @@
                     localStorage.setItem('data-md5', g_s_md5);
                     localStorage.setItem('data', JSON.stringify(g_datas));
                 }
-                if (g_max == -1) {
-                    g_max = g_datas.length;
+
+                var datas = [];
+                g_max = 0;
+                if(a_get['lang'] != 'ALL'){
+                  for(var d of g_datas){
+                     if(d.lang != a_get['lang']) continue;
+                     g_max++;
+                     datas.push(d);
+                  }
+                }else{
+                  g_max = g_datas.length;
+                  datas = g_datas;
                 }
+               
                 var id = 0;
-                var max_page = parseInt(g_max / g_load);
-                if (page > 0 && page <= max_page) {
+                g_max_page = parseInt(g_max / g_load);
+                console.log(g_max_page);
+                if (page > 0 && page <= g_max_page) {
                     g_page = page;
                     toTop();
 
@@ -585,9 +597,8 @@
                     <td></td>
                   </tr>`;
                     for (var id = start; id < end; id++) {
-                        d = g_datas[id];
-                        if (a_get['lang'] != 'ALL' && d.lang != a_get['lang'])
-                            continue;
+                        d = datas[id];
+                        if (a_get['lang'] != 'ALL' && d.lang != a_get['lang']) continue;
                         h = h + `<tr key=` + id + `>
                <td>
                <i data-index=` + id + ` class="material-icons right star">` + (isFavorited(d) == -1 ? 'star_border' : 'star') + `</i>
@@ -630,7 +641,10 @@
                     // 为可以预览的文件加上鼠标手势
                     $('td._action').parent().find('img').css('cursor', 'pointer');
 
-                    $('td:eq(2)').attr('data-th', 'filter').html('filter');
+                    $('td:eq(2)').css({
+                      'font-size': '20px',
+                      'cursor': 'pointer'
+                    }).html('filter');
                     initCopyDom('.copy_btn');
                     initPage(page);
                 }
