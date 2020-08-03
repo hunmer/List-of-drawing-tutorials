@@ -62,7 +62,7 @@ function initFavorite(){
         }
       }
     });
-    
+
      html = html +
       `<div class="card col s`+col+`" style='height: 250px;' key=`+i+` >
       <div class="card-image waves-effect waves-block waves-light">
@@ -72,7 +72,7 @@ function initFavorite(){
         <span class="activator grey-text text-darken-4" style=' cursor: pointer;'>`+d.title+`<i class="material-icons right bottom" onclick='closeCardrevea();'>more_vert</i></span>
       </div>
       <div class="card-reveal">
-        <span class="card-title grey-text text-darken-4" style="margin-bottom: 17px;">`+d.title+`<i class="material-icons right">close</i></span>
+        <span class="card-title grey-text text-darken-4" style="">`+d.title+`<i class="material-icons right" style='margin-top: 12px;margin-bottom: 17px;'>close</i></span>
         <ul class="collection">
         `;
 
