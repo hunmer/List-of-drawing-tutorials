@@ -196,12 +196,14 @@
                   json = JSON.parse(this.result);
                   if(json.length > 0){
                     if(json.length < g_favorite.length){
-                      if(confirm('The imported data('+json.length+') is less than your current data('+json.length+'). Are you sure to import?')){
-                        g_favorite = json;
-                        initFavorite();
-                        alert('Successfully imported '+json.length+' books');
+                      if(!confirm('The imported data('+json.length+') is less than your current data('+json.length+'). Are you sure to import?')){
+                        return;
+                       
                       }
                     }
+                     g_favorite = json;
+                    initFavorite();
+                    alert('Successfully imported '+json.length+' books');
                   }
                 }
                 catch(err){
@@ -438,7 +440,7 @@
 
             function initPage(page) {
                 var start, end;
-                var i_max_page = parseInt(g_max / g_load) + 1;
+                var i_max_page = parseInt(g_max / g_load);
                 if (page == i_max_page) {
                     start = i_max_page - 4;
                     if (start <= 0)
@@ -507,7 +509,7 @@
 
             function pageAdd(add) {
                 var page = parseInt($('#page_input').val()) + add;
-                var max_page = +parseInt(g_max / g_load) + 1;
+                var max_page = parseInt(g_max / g_load);
                 if (page > max_page) {
                     page = max_page;
                 } else if (page <= 0) {
@@ -518,7 +520,7 @@
 
             function toPage() {
                 var page = parseInt($('#page_input').val());
-                var max_page = +parseInt(g_max / g_load) + 1;
+                var max_page = parseInt(g_max / g_load);
                 if (page > max_page) {
                     //$('#modal2 h4').html('error page number!');
                     $('#modal2 input').addClass('input_error');
@@ -537,8 +539,8 @@
                     g_max = g_datas.length;
                 }
                 var id = 0;
-                var i_max_page = parseInt(g_max / g_load) + 1;
-                if (page > 0 && page <= i_max_page) {
+                var max_page = parseInt(g_max / g_load);
+                if (page > 0 && page <= max_page) {
                     g_page = page;
                     toTop();
 
@@ -579,7 +581,7 @@
                     <td></td>
                     <td></td>
                   </tr>`;
-                    for (var id = start; id <= end; id++) {
+                    for (var id = start; id < end; id++) {
                         d = g_datas[id];
                         if (a_get['lang'] != 'ALL' && d.lang != a_get['lang'])
                             continue;
