@@ -202,6 +202,7 @@
                       }
                     }
                      g_favorite = json;
+                     local_saveJson('favorite', g_favorite);
                     initFavorite();
                     alert('Successfully imported '+json.length+' books');
                   }
@@ -375,11 +376,12 @@
                               <h3>Reset the Favorite?</h3>
                               <p>Are you sure? It will clear your favorites!!!</p>
                              <div class="modal-footer">
-                              <a href="javascript: void(0)" onclick="$('div .row ').html('');g_favorite = [];local_saveJson('favorite', []);M.Modal.getInstance($('#modal2')).close();" class="waves-effect waves-green btn-flat" >Reset</a>
+                              <a href="javascript: void(0)" onclick="$('div .row ').html('');g_favorite = [];local_saveJson('favorite', []);$('.star').html('star_border');M.Modal.getInstance($('#modal2')).close();" class="waves-effect waves-green btn-flat" >Reset</a>
                               <a href="javascript: void(0)" class="modal-close waves-effect waves-red btn-flat">Cancel</a>
                               </div></div>`;
                           $('#modal2').html(h).modal('open');
                       }
+                      break;
 
                       case 'file_download':
                         downloadData(g_favorite);
@@ -603,9 +605,12 @@
 
                         h = h + '<td>';
                         for (var i = 0; i < d.link.length; i++) {
-                            if (d.link[i].indexOf('提取码') === -1) {
+                          if(d.link[i].indexOf('vk.com/') != -1){
+                              h = h + `<a href="javascript:openNew('` + d.link[i] + `')">` + (i + 1) + '.download</a>';
+                          }else
+                          if (d.link[i].indexOf('提取码') === -1) {
                                 h = h + '<a target="_blank" href="' + d.link[i] + '">' + (i + 1) + '.download</a>';
-                            } else {
+                            }else{
                                 h = h + d.link[i];
                             }
                             h = h + '&nbsp;&nbsp;';

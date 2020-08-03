@@ -53,6 +53,16 @@ function initFavorite(){
   var col = parseInt(12 / parseInt($(this).width() / 150));
   for(var i=0; i<g_favorite.length;i++){
     d = g_favorite[i];
+
+    $('tr').each(function(index, el) {
+      var td = $(el).find('td');
+      if(td.length > 2){
+         if(td[1].innerText == d.title && td[2].innerText == d.lang){
+          $(el).find('i').html('star');
+        }
+      }
+    });
+    
      html = html +
       `<div class="card col s`+col+`" style='height: 250px;' key=`+i+` >
       <div class="card-image waves-effect waves-block waves-light">
@@ -77,6 +87,7 @@ function initFavorite(){
     </div>`;
   }
   $('#test2 .row').html(html);
+
 }
 
 function closeCardrevea(){
