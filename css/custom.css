@@ -110,8 +110,6 @@ nav i{
  }
 
 
-
-
  .card .card-title {
      font-style: italic; 
     font-size: 13px !important;
@@ -122,6 +120,17 @@ nav i{
     margin: 0px auto;
     width: 100px !important;
     height: 120px;
+}
+
+.card .card-content span {
+    display: -webkit-box;
+    display: -moz-box;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp:5;   /*显示行数*/
 }
 
 .bottom {
@@ -151,4 +160,30 @@ img {
 
 ._id {
   margin: 0px auto;
+}
+
+.inputstyle{
+
+    width: 144px;
+
+    height: 41px;
+
+    cursor: pointer;
+
+    font-size: 30px;
+
+    outline: medium none;
+
+    position: absolute;
+
+    filter:alpha(opacity=0);
+
+    -moz-opacity:0;
+
+    opacity:0; 
+
+    left:0px;
+
+    top: 0px;
+
 }

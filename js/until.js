@@ -50,10 +50,11 @@ function setLocalItem(key, value) {
 function initFavorite(){
   var html = '';
   var d;
+  var col = parseInt(12 / parseInt($(this).width() / 150));
   for(var i=0; i<g_favorite.length;i++){
     d = g_favorite[i];
      html = html +
-      `<div class="card col s6" style='height: 250px;' >
+      `<div class="card col s`+col+`" style='height: 250px;' key=`+i+` >
       <div class="card-image waves-effect waves-block waves-light">
         <img class="activator" src="`+d.img+`">
       </div>
@@ -69,7 +70,7 @@ function initFavorite(){
           html = html +`<li class="collection-item" onclick="closeCardrevea(); openNew('https://neysummer2000-location.glitch.me/?id=`+d.online.id+`&title=`+ encodeURI(d.title)+`');"><i class="material-icons right">chrome_reader_mode</i>Read</li>`;
         }
         html = html +`<li class="collection-item" onclick='openDownloadConfirm("`+d.title+`", "`+d.lang+`");'><i class="material-icons right">file_download</i>Download</li>
-          <li class="collection-item" onclick='closeCardrevea(); window.open("https://www.google.com/search?q=`+d.title+`")'><i class="material-icons right">search</i>Search</li>
+          <li class="collection-item" onclick='closeCardrevea(); window.open("https://www.google.com/search?q=`+d.title+`")'><i class="material-icons right">search</i>Google</li>
           <li class="collection-item" onclick='removeFromFavorite("`+d.title+`", "`+d.lang+`");'><i class="material-icons right">delete</i>Remove</li>
         </ul>
       </div>
