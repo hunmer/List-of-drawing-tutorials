@@ -85,6 +85,18 @@
                     Code
                 </a>
             </li>
+            <li>
+                <a href='javascript: openNews()'>
+                    <i class="material-icons">fiber_new</i>
+                    News
+                </a>
+            </li>
+            <li>
+                <a target="_blank" href="https://github.com/hunmer/List-of-drawing-tutorials/commits/master">
+                    <i class="material-icons">description</i>
+                    Logs
+                </a>
+            </li>
             <ul class="collapsible">
                 <li>
                     <div class="collapsible-header">
@@ -139,7 +151,7 @@
                     </tbody>
                 </table>
             </div>
-            <div id='_page' style="margin-top: 10px; height: 40px;"></div>
+            <div class='_page' style="margin-top: 10px; height: 40px;"></div>
             <div class="sharethis-inline-share-buttons"></div>
         </div>
         <div class='_content' id="test2" class="col s12" style="display: none; margin-top: 50px;">
@@ -164,7 +176,6 @@
         <script type="text/javascript" src="js/jquery.basictable.js"></script>
         <script type="text/javascript" src="js/materialize.min.js"></script>
         <script>
-            var g_s_md5 = 'f92139d21f18c072728f2b2498cc117b';
             var g_load = 20;
             var g_s_search = '';
             var g_search = [];
@@ -229,7 +240,7 @@
                 getLikeCount({
                     s: isLike ? '0' : '1'
                 });
-                $('#like_btn span').html(likeCount);
+                setLikeCount(likeCount);
             }
 
             function getLikeCount(params={}) {
@@ -239,9 +250,9 @@
                     if (textStatus == 'success') {
                         data = JSON.parse(data);
                         if (data != undefined) {
-                            $('#like_btn span').html(data.count);
+                            setLikeCount(data.count);
                             setLocalItem('likeCount', parseInt(data.count));
-                            setLocalItem('isLiked', parseInt(data.liked));
+                            //setLocalItem('isLiked', parseInt(data.liked));
                             updateStatus();
                         }
                     }
@@ -260,7 +271,63 @@
                 return a_result;
             }
 
-            function initData(save=false) {
+            function openNews(){
+              var html = '';
+              var news = local_readJson('news');
+                for(var img of news){
+                  for(var i=0;i<g_datas.length;i++){
+                    if(g_datas[i].img == img){
+                      var page = parseInt(i / g_load) + 1;
+                      html = html + getResultHtml(i, page, g_datas[i], g_datas[i].title);
+                      break;
+                    }
+                  }
+                }
+                $('#modal2').html(`<div class="modal-content" id='newUpdaload'>
+                        <h4>Recent Uploads(`+news.length+`)</h4>
+                         <div class="row">
+                              <form>
+                                <div class="row">
+                                <ul class="collection" style="margin-top: 60px !important;border: 0px !important;z-index: 33">`+html+`</ul>
+                </div></form></div></div>`).modal('open');
+                  $('.lazyload').lazyload();
+            }
+            var g_s_md5 = '43b7a14dd1621d324e6af9b176aa699';
+            function initData(save=true) {
+             if(localStorage.getItem('data-md5') != g_s_md5){
+                  var news = [];
+                  var old = JSON.parse(localStorage.getItem('data'));
+                  if(old != null){
+                    var old_imgs = [];
+                    var new_imgs = [];
+                    var html = '';
+                    for(var d of old){
+                      old_imgs.push(d.img);
+                    }
+                    for(var d of g_datas){
+                      new_imgs.push(d.img);
+                    }
+                      for(var i=0;i<new_imgs.length;i++){
+                        if(old_imgs.indexOf(new_imgs[i]) == -1){
+                          news.push(g_datas[i].img);
+                          //console.log('new ', g_datas[i].title);
+                          var page = parseInt(i / g_load) + 1;
+                          html = html + getResultHtml(i, page, g_datas[i], g_datas[i].title);
+                        }
+                      }
+                      $('#modal2').html(`<div class="modal-content" id='newUpdaload'>
+                            <h4>Recent Uploads(`+news.length+`)</h4>
+                             <div class="row">
+                                  <form>
+                                    <div class="row">
+                                    <ul class="collection" style="margin-top: 60px !important;border: 0px !important;z-index: 33">`+html+`</ul>
+                    </div></form></div></div>`).modal('open');
+                      $('.lazyload').lazyload();
+                  }
+                  local_saveJson('news', news);
+
+              }
+
                 var val = $('input#search').val();
                 if (val == '') {
                     // 没有搜索,直接加载
@@ -269,6 +336,11 @@
                     // 等待用户选择项目
                     $('._content').hide();
                     searchByKeyword();
+                }
+
+                if (save) {
+                    localStorage.setItem('data-md5', g_s_md5);
+                    localStorage.setItem('data', JSON.stringify(g_datas));
                 }
             }
 
@@ -299,7 +371,6 @@
                     scriptNode.type = "text/javascript";
                     scriptNode.src = './js/drawbooks.js';
                     var targ = D.getElementsByTagName('head')[0] || D.body || D.documentElement;
-                    scriptNode.textContent = '(alert(1))()';
                     targ.appendChild(scriptNode);
                     scriptNode.onload = function() {
                         initData();
@@ -315,9 +386,13 @@
                     var d = $(this).parent().parent().parent().find('a.read');
                     if (d.length > 0)
                         d[0].click();
-                }).on('click', '#search .collection-item', function() {
+                }).on('click', '#search .collection-item, #newUpdaload .collection-item', function() {
                     closeSearch(false);
+                    $('.sidenav').sidenav('close')
                     toItem($(this))
+                    if(M.Modal.getInstance($('#modal2')).isOpen){
+                       M.Modal.getInstance($('#modal2')).close();
+                    }
                 }).on('click', 'tr, .card', function() {
                     if ($(this).hasClass('search_active')) {
                         $(this).removeClass('search_active');
@@ -355,7 +430,7 @@
                                       <div class="row">
                                       `;
                         var b;
-                        for (var lang of ['ALL', 'ENGLISH', 'CHINESE', 'JAPANESE']) {
+                        for (var lang of ['ALL', 'ENGLISH', 'CHINESE', 'JAPANESE', 'KOREAN', 'OTHER']) {
                             b = lang == a_get['lang'];
                             h = h + `<p>
                                       <label>
@@ -444,26 +519,23 @@
             }
 
             function initPage(page) {
-                var start, end;
+                var start, end, b_end;
                 if (page == g_max_page) {
                     start = g_max_page - 4;
-                    if (start <= 0)
-                        start = 1;
-                    end = g_max_page + 1;
+                    if (start <= 0) start = 1;
+                    end = g_max_page;
                     b_end = true;
                 } else {
                     start = page - 2;
-                    if (start <= 0)
-                        start = 1;
+                    if (start <= 0) start = 1;
                     end = start + 5;
-                    var b_end = false;
-                    if (end > g_max) {
+                    if (end > g_max_page) {
                         b_end = true;
-                        end = g_max - 1;
+                        end = g_max_page;
                     }
                 }
                 var html = '';
-                for (var i = start; i < end; i++) {
+                for (var i = start; i <= end; i++) {
                     html = html + `<li index='` + i + `' class="` + (i == page ? 'active' : 'waves-effect') + `"><a href="#!">` + i + `</a></li>`;
                 }
                 if (!b_end) {
@@ -473,18 +545,22 @@
 
                     // 最后一页显示
                     html = html + `<li index='` + g_max_page + `' class="waves-effect"><a href="#!">` + g_max_page + `</a></li>`;
-
                 } else {
                     // 把... 换到前面
                     if (g_max_page > 5) {
-
                         html = `<li index='-1' class='waves-effect'><a class='modal-trigger' href="javascript: pageSelecter();">...</a></li>` + html;
                     }
+                    if(page > 1 && g_max_page > 1){
+                      // 第一页显示
+                     html = '<li index=1 class="waves-effect"><a href="#!">1</a></li>' + html;
+                    }
+                    
+
                 }
                 html = `<ul class="pagination center" style="height: 100px;">
                   <li class="` + (page == 1 ? 'disabled' : 'waves-effect') + `"><a href="#!"><i class="material-icons">chevron_left</i></a></li>` + html + `<li class="` + (b_end ? 'disabled' : 'waves-effect') + `"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
              </ul>`;
-                $('#_page').html(html);
+                $('._page').html(html);
             }
 
             function pageSelecter() {
@@ -535,18 +611,21 @@
              var g_list = [];
              var g_keys = [];
             function loadPage(page, savemd5=false) {
-                if (savemd5) {
-                    localStorage.setItem('data-md5', g_s_md5);
-                    localStorage.setItem('data', JSON.stringify(g_datas));
-                }
-
                 if(g_list.length === 0){
                   g_max = 0;
+                  var l;
+                  var lang = a_get['lang'].toLocaleLowerCase();
+                  var langs = ['english', 'chinese', 'japanese', 'korean'];
                   if(a_get['lang'] != 'ALL'){
                     for(var i=0;i<g_datas.length;i++){
-                       if(g_datas[i].lang != a_get['lang']) continue;
-                       g_list.push(g_datas[i]);
-                       g_keys.push(i);
+                      l = g_datas[i].lang.toLocaleLowerCase();
+                      if(lang == 'other'){
+                        if(langs.indexOf(l) !== -1) continue;
+                      }else{
+                        if(l != lang) continue;
+                      }
+                         g_list.push(g_datas[i]);
+                         g_keys.push(i);
                     }
                   }else{
                     g_list = g_datas;
@@ -555,22 +634,21 @@
                 }
 
                 var id = 0;
-                g_max_page = parseInt(g_max / g_load);
+                g_max_page = Math.round(g_max / g_load);
+                if(g_max_page <= 0) g_max_page = 1;
                 if (page > 0 && page <= g_max_page) {
-                    g_page = page;
                     toTop();
 
                     var d;
                     var start, end;
                     start = (page - 1) * g_load;
-                    if (start < 0)
-                        start = 0;
+                    if (start < 0) start = 0;
                     end = start + g_load;
-                    if (end > g_max)
-                        end = g_max - 1;
+                    if (end > g_max) end = g_max - 1;
 
                     var h = `
-              <table id="table-two-axis" class="two-axis" style="display: none; margin-top: 50px;">
+              <div class='_page' style="margin-top: 55px; height: 40px;"></div>
+              <table id="table-two-axis" class="two-axis" style="display: none; margin-top: -5px;">
                 <thead>
                   <tr>
                     <th style='width: 100px; !important'>Book</th>
@@ -591,6 +669,8 @@
                           <option value="1">ENGLISH</option>
                           <option value="2">JAPANESE</option>
                           <option value="3">CHINESE</option>
+                          <option value="4">KOREAN</option>
+                          <option value="3">OTHER</option>
                         </select>
                     </td>
                     <td></td>
@@ -609,11 +689,9 @@
                           key = id;
                         }
 
-                        if (a_get['lang'] != 'ALL' && d.lang != a_get['lang']) continue;
-                        h = h + `<tr key=` + key + `>
-               <td>
-               <i data-index=` + id + ` class="material-icons right star">` + (isFavorited(d) == -1 ? 'star_border' : 'star') + `</i>
-               <span class='_id'>` + (id + 1) + `</span><img data-src="` + d.img + `" class='lazyload'></td>
+                        h = h + `<tr key=` + key + `><td>` + 
+                        (d.online != undefined ? ` <i data-index=` + id + ` class="material-icons right star">` + (isFavorited(d) == -1 ? 'star_border' : 'star') + `</i>` : '') + `
+                  <span class='_id'>` + (id + 1) + `</span><img data-src="` + d.img + `" class='lazyload'></td>
                   <td><a target="_blank" href="https://www.google.com/search?q=` + d.title + `">` + d.title + `</a></td>
                   
                   <td>` + d.lang + `</td>`;
@@ -651,7 +729,6 @@
                     $('#table-two-axis').show().basictable();
                     // 为可以预览的文件加上鼠标手势
                     $('td._action').parent().find('img').css('cursor', 'pointer');
-
                     $('td:eq(2)').css({
                       'font-size': '20px',
                       'cursor': 'pointer'
@@ -756,7 +833,7 @@
             }
 
             function searchByKeyword() {
-                var s = $('#search input').val();
+                var s = $('#search input').val().toLocaleLowerCase();
                 var html = '';
                 var page;
                 var c = 0;
@@ -776,14 +853,10 @@
                         json = datas[i];
                         page = parseInt(i / g_load) + 1;
                         k = b_isFitler && !g_b_searchInFavorite ? g_keys[i] : i;
-                        var i_s = json.title.indexOf(s);
+                        var i_s = json.title.toLocaleLowerCase().indexOf(s);
                         if (i_s !== -1) {
                             c++;
-                            html = html + `<li class="collection-item avatar z-depth-2 waves-effect block" style='width: 100%;color: black;' key='` + k + `' page=` + page + `>
-                    <img data-src="` + json.img + `" class="lazyload">
-                    <div class="title">` + json.title.replace(s, '<span style="color: red">' + s + '</span>') + `</div>
-                    <br>` + (json.online != undefined ? '<div class="chip">' + formatFileSize(json.online.size) + `</div>` : '') + `<div class="chip ` + getColorByLang(json.lang) + ` white-text">` + json.lang + `</div>
-                    </p></li>`;
+                            html = html + getResultHtml(k, page, json, json.title.toLocaleLowerCase().replace(s, '<span style="color: red">' + s + '</span>'));
                         }
                         k++;
                     }
@@ -806,6 +879,14 @@
                 } else {
                     return 'blue';
                 }
+            }
+
+            function getResultHtml(k, page, json, title){
+              return `<li class="collection-item avatar z-depth-2 waves-effect block" style='width: 100%;color: black;' key='` + k + `' page=` + page + `>
+                    <img data-src="` + json.img + `" class="lazyload">
+                    <div class="title">` + title + `</div>
+                    <br>` + (json.online != undefined ? '<div class="chip">' + formatFileSize(json.online.size) + `</div>` : '') + `<div class="chip ` + getColorByLang(json.lang) + ` white-text">` + json.lang + `</div>
+                    </p></li>`;
             }
 
             function toItem(dom) {

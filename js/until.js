@@ -4,16 +4,32 @@ var g_config = local_readJson('config', {
 
 });
 var count = parseInt(getLocalItem('likeCount', 100));
-$('#like_btn span').html(count);
+setLikeCount(count);
 updateStatus();
 
-  function updateStatus(){
-      if(parseInt(getLocalItem('isLiked', 0)) == 1){
-        $('#like_btn i').css('cssText', 'color: red!important');
-      }else{
-        $('#like_btn i').css('cssText', '');
-      }
+function updateStatus(){
+    if(parseInt(getLocalItem('isLiked', 0)) == 1){
+      $('#like_btn i').css('cssText', 'color: red!important');
+    }else{
+      $('#like_btn i').css('cssText', '');
     }
+}
+
+function setLikeCount(max){
+  var s = parseInt($('#like_btn span').html());
+
+  var timer = setInterval(function(){
+    if(s < max){
+      s++;
+    }else{
+      s--;
+    }
+    $('#like_btn span').html(s);
+    if(s==max){
+      clearInterval(timer);
+    }
+  }, 10);
+}
 
 function local_saveJson(key, data) {
     if (window.localStorage) {
