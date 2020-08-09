@@ -292,7 +292,7 @@
                 </div></form></div></div>`).modal('open');
                   $('.lazyload').lazyload();
             }
-            var g_s_md5 = '43b7a14dd1621d324e6af9b176aa699';
+            var g_s_md5 = '1b03e8d9ef012224b40f4e34e1454756';
             function initData(save=true) {
              if(localStorage.getItem('data-md5') != g_s_md5){
                   var news = [];
@@ -315,23 +315,23 @@
                           html = html + getResultHtml(i, page, g_datas[i], g_datas[i].title);
                         }
                       }
-                      $('#modal2').html(`<div class="modal-content" id='newUpdaload'>
-                            <h4>Recent Uploads(`+news.length+`)</h4>
-                             <div class="row">
-                                  <form>
-                                    <div class="row">
-                                    <ul class="collection" style="margin-top: 60px !important;border: 0px !important;z-index: 33">`+html+`</ul>
-                    </div></form></div></div>`).modal('open');
-                      $('.lazyload').lazyload();
+                      if(news.length > 0){
+                         $('#modal2').html(`<div class="modal-content" id='newUpdaload'>
+                              <h4>Recent Uploads(`+news.length+`)</h4>
+                               <div class="row">
+                                    <form>
+                                      <div class="row">
+                                      <ul class="collection" style="margin-top: 60px !important;border: 0px !important;z-index: 33">`+html+`</ul>
+                      </div></form></div></div>`).modal('open');
+                        $('.lazyload').lazyload();
+                      }
                   }
                   local_saveJson('news', news);
-
               }
-
                 var val = $('input#search').val();
                 if (val == '') {
                     // 没有搜索,直接加载
-                    loadPage(1, save);
+                    loadPage(a_get['page'] != undefined ? a_get['page'] : 1, save);
                 } else {
                     // 等待用户选择项目
                     $('._content').hide();
@@ -706,13 +706,17 @@
 
                         h = h + '<td>';
                         for (var i = 0; i < d.link.length; i++) {
-                          if(d.link[i].indexOf('vk.com/') != -1){
-                              h = h + `<a href="javascript:openNew('` + d.link[i] + `')">` + (i + 1) + '.download</a>';
+                           var url = d.link[i];
+                          if(url.indexOf('vk.com/') != -1){
+                            if(url.indexOf('&dl=') == -1 && d.page != undefined){
+                              url = 'https://neysummer2000-location.glitch.me/getVKURL.php?doc='+getString(url, 'vk.com/doc', '?')+'&page='+d.page;
+                            }
+                            h = h + `<a href="javascript:openNew('` + url + `')">` + (i + 1) + '.download</a>';
                           }else
-                          if (d.link[i].indexOf('提取码') === -1) {
-                                h = h + '<a target="_blank" href="' + d.link[i] + '">' + (i + 1) + '.download</a>';
+                          if (url.indexOf('提取码') === -1) {
+                                h = h + '<a target="_blank" href="' + url + '">' + (i + 1) + '.download</a>';
                             }else{
-                                h = h + d.link[i];
+                                h = h + url;
                             }
                             h = h + '&nbsp;&nbsp;';
                         }

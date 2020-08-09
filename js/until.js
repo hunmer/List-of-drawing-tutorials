@@ -175,6 +175,20 @@ function getIndexByKey(title, lang){
     return -1;
   }
 
+  function getString(str, s, e){
+    if(typeof(str) == 'string'){
+       var i_start = str.indexOf(s);
+      if(i_start != -1){
+        i_start += s.length;
+        var i_end = str.indexOf(e, i_start);
+        if(i_end != -1){
+          return str.substr(i_start, i_end - i_start);
+        }
+      }
+    }
+  return '';
+}
+
 
   function favorite(index, title, lang){
       g_favorite.splice(index, 1);
