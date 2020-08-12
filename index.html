@@ -292,7 +292,7 @@
                 </div></form></div></div>`).modal('open');
                   $('.lazyload').lazyload();
             }
-            var g_s_md5 = 'af7ab7d9a24441de44ccef5ec9236411';
+            var g_s_md5 = '90902fefee157d945d5fa216c4d16611';
             function initData(save=true) {
              if(localStorage.getItem('data-md5') != g_s_md5){
                   var news = [];
@@ -324,9 +324,9 @@
                                       <ul class="collection" style="margin-top: 60px !important;border: 0px !important;z-index: 33">`+html+`</ul>
                       </div></form></div></div>`).modal('open');
                         $('.lazyload').lazyload();
+                        local_saveJson('news', news);
                       }
                   }
-                  local_saveJson('news', news);
               }
                 var val = $('input#search').val();
                 if (val == '') {
@@ -550,7 +550,7 @@
                     if (g_max_page > 5) {
                         html = `<li index='-1' class='waves-effect'><a class='modal-trigger' href="javascript: pageSelecter();">...</a></li>` + html;
                     }
-                    if(page > 1 && g_max_page > 1){
+                    if(start > 1){
                       // 第一页显示
                      html = '<li index=1 class="waves-effect"><a href="#!">1</a></li>' + html;
                     }
