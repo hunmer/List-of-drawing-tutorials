@@ -97,6 +97,24 @@
                     Logs
                 </a>
             </li>
+            <li>
+                <a href="javascript: $('#modal3').html(`<div class='modal-content'><h3>!NOT OFFICAL!</h3><p>This discord is not the official website of<a href='https://yande.re'>yande.re</a>,But you can share your drawings here or you are interested in translating books and so on.</p></div><div class='modal-footer'><a href='https://discord.gg/MPdwzcq'class='modal-close waves-effect waves-red btn-flat'target='_blank'>Join</a><a href='javascript: void(0)'class='modal-close waves-effect waves-red btn-flat'>No,Thanks</a></div></div>`).modal('open');">
+                    <i class="material-icons">toys</i>
+                    discord
+                </a>
+            </li>
+            
+             <ul class="collapsible">
+                <li>
+                    <div class="collapsible-header">
+                        <i class="material-icons">apps</i>
+                        Tools
+                    </div>
+                    <div class="collapsible-body">
+                        <a target="_blank" href="https://sites.google.com/site/shinchirosplayground/home/mega-link-downloader" style="text-align: center;" class='block'>MEGA Link Downloader</a>
+                    </div>
+                </li>
+            </ul>
             <ul class="collapsible">
                 <li>
                     <div class="collapsible-header">
@@ -112,6 +130,8 @@
         <!-- 侧边栏结束 -->
         <!-- 自定义弹出 -->
         <div id="modal2" class="modal"></div>
+        <div id="modal3" class="modal"></div>
+
         <div id="modal_comment" class="modal modal-fixed-footer"></div>
         <div class='_content' id="test1" class="col s12">
             <div class="preloader-wrapper big active">
@@ -137,6 +157,7 @@
                             <th>Size</th>
                             <th>Action</th>
                             <th>Backup</th>
+                            <th>...</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -362,7 +383,7 @@
                     openSearch(false);
                 }
 
-                if (localStorage.getItem('data-md5') == g_s_md5) {
+                if (false && localStorage.getItem('data-md5') == g_s_md5) {
                     g_datas = JSON.parse(localStorage.getItem('data'));
                     initData(false);
                 } else if (window.location.protocol == 'file:') {
@@ -382,7 +403,20 @@
                     });
                 }
 
-                $(document).on('click', 'tr img', function() {
+
+                $(document).on('click', '.bt-content i', function(event) {
+                  //if(this.innerText == 'arrow_drop_down'){}
+                  var key = $(this).parents('tr').attr('key');
+                  var h = `<div class="modal-content" key='`+key+`'>
+                       <ul class="collection">
+                      <li class="collection-item" onclick='_dialog_shareBook(`+key+`)'><i class="material-icons right">content_copy</i>Share</li>
+                      </ul>
+                     <div class="modal-footer">
+                      <a href="javascript: void(0)" class="modal-close waves-effect waves-red btn-flat">Cancel</a>
+                      </div></div>`;
+                  $('#modal2').html(h).modal('open');
+                }).
+                on('click', 'tr img', function() {
                     var d = $(this).parent().parent().parent().find('a.read');
                     if (d.length > 0)
                         d[0].click();
@@ -430,7 +464,7 @@
                                       <div class="row">
                                       `;
                         var b;
-                        for (var lang of ['ALL', 'ENGLISH', 'CHINESE', 'JAPANESE', 'KOREAN', 'OTHER']) {
+                        for (var lang of ['ALL', 'ENGLISH', 'CHINESE', 'JAPANESE', 'KOREAN', 'OTHER', 'TEST']) {
                             b = lang == a_get['lang'];
                             h = h + `<p>
                                       <label>
@@ -476,6 +510,129 @@
                 });
                 getLikeCount();
             });
+
+
+                function copyBookInfo(index){
+                  var d = g_datas[index];
+                  var a = [];
+                  $('#modal2 input:checked').each(function(index, el) {
+                    var type = $(el).next().html();
+                    switch(type){
+                      case 'Title':
+                        a.push('Book: '+d.title);
+                        break;
+
+                      case 'Lang':
+                        a.push('Lang: '+d.lang);
+                        break;
+
+                      case 'FileSize':
+                        a.push('Size: '+formatFileSize(d.online.size));
+                        break;
+                      case 'DirectLink':
+                        a.push('Download As PDF: http://pan-yz.chaoxing.com/download/downloadfile?fleid=' + d.online.id + '&puid=142588570');
+                        break;
+
+                       case 'ReadOnline':
+                        a.push('ReadOnline: https://neysummer2000-location.glitch.me/?id=' + d.online.id + '&title=' + encodeURI(d.title));
+                        break;
+
+                      default:
+                        var i = parseInt(type.replace('Download Link ', ''));
+                        if(i > 0){
+                          a.push(type+' : '+d.link[i-1]);
+                        }
+                        break;
+                    }
+                  });
+
+                  if(a.length>0){
+                    a.push("------------------------\r\nGenerate from "+location.origin + location.pathname);
+                    openCopyDialog(a.join("\r\n"), d.title);
+                  }
+                }
+
+                  
+
+                function openCopyDialog(content, title = ''){
+                   var h = `<div class="modal-content">
+                   <h3>`+title+`</h3>
+                    <div class="input-field col s12">
+                      <textarea id="textarea2" class="materialize-textarea" data-length="9999">`+content+`</textarea>
+                    </div>
+                  </div>
+                   <div class="modal-footer">
+                      <a href="javascript: void(0)" id='copy' class="modal-close waves-effect waves-red btn-flat" data-clipboard-target="#textarea2">Copy</a>
+                      <a href="javascript: void(0)" class="modal-close waves-effect waves-red btn-flat">Cancel</a>
+                      </div></div>`;
+                  $('#modal3').html(h).modal('open');
+                  M.textareaAutoResize($('#textarea2'));
+
+                  if (g_clipboard != undefined) {
+                      g_clipboard.destroy();
+                  }
+                  g_clipboard = new Clipboard('#copy');
+                  g_clipboard.on('success', function(e) {
+                      e.clearSelection();
+                      alert('Copied!');
+                  });
+                  g_clipboard.on('error', function(e) {
+                      alert($(e.trigger).attr('data-clipboard-text'));
+                  });
+                }
+
+                function _dialog_shareBook(index){
+                  var d = g_datas[index];
+                    var h = `<div class="modal-content">
+                        <form action="#">
+                          <p>
+                            <label>
+                              <input type="checkbox" class="filled-in" checked="checked" />
+                              <span>Title</span>
+                            </label>
+                          </p>
+                         <p>
+                            <label>
+                              <input type="checkbox" class="filled-in" checked="checked" />
+                              <span>Lang</span>
+                            </label>
+                          </p>`;
+                  if(d.online != undefined){
+                    h = h + `<p>
+                            <label>
+                              <input type="checkbox" class="filled-in" checked="checked" />
+                              <span>FileSize</span>
+                            </label>
+                          </p>
+                          <p>
+                            <label>
+                              <input type="checkbox" class="filled-in" checked="checked" />
+                              <span>DirectLink</span>
+                            </label>
+                          </p>
+                          <p>
+                            <label>
+                              <input type="checkbox" class="filled-in"/>
+                              <span>ReadOnline</span>
+                            </label>
+                          </p>`;
+                  }
+                  h = h + '<p><div class="divider" style="margin: 10px;"></div></p>';
+                  for(var i=0;i<d.link.length;i++){
+                     h = h + `<p>
+                            <label title="`+d.link[i]+`">
+                              <input type="checkbox" class="filled-in"/>
+                              <span>Download Link `+(i+1)+`</span>
+                            </label>
+                          </p>`;
+                  }
+                  h = h + `</form>
+                     <div class="modal-footer">
+                      <a href="javascript: copyBookInfo(`+index+`)" class="modal-close waves-effect waves-red btn-flat">Copy</a>
+                      <a href="javascript: void(0)" class="modal-close waves-effect waves-red btn-flat">Cancel</a>
+                      </div></div>`;
+                  $('#modal2').html(h).modal('open');
+                }
 
             function downloadData(d){
                 var eleLink = document.createElement('a');
@@ -540,22 +697,11 @@
                 }
                 if (!b_end) {
                     if (g_max_page > 5) {
-                        html = html + `<li index='-1' class='waves-effect'><a class='modal-trigger' href="javascript: pageSelecter();">...</a></li>`;
+                        html = html + `<li index='-1' class='waves-effect'><a class='modal-trigger' href="javascript: pageSelecter();">...</a></li><li index='` + g_max_page + `' class="waves-effect"><a href="#!">` + g_max_page + `</a></li>`;
                     }
-
-                    // 最后一页显示
-                    html = html + `<li index='` + g_max_page + `' class="waves-effect"><a href="#!">` + g_max_page + `</a></li>`;
-                } else {
-                    // 把... 换到前面
-                    if (g_max_page > 5) {
-                        html = `<li index='-1' class='waves-effect'><a class='modal-trigger' href="javascript: pageSelecter();">...</a></li>` + html;
-                    }
-                    if(start > 1){
-                      // 第一页显示
-                     html = '<li index=1 class="waves-effect"><a href="#!">1</a></li>' + html;
-                    }
-                    
-
+                }
+                 if(start > 1){ // 第一页显示
+                 html = `<li index=1 class="waves-effect"><a href="#!">1</a></li><li index='-1' class='waves-effect'><a class='modal-trigger' href="javascript: pageSelecter();">...</a></li>` + html;
                 }
                 html = `<ul class="pagination center" style="height: 100px;">
                   <li class="` + (page == 1 ? 'disabled' : 'waves-effect') + `"><a href="#!"><i class="material-icons">chevron_left</i></a></li>` + html + `<li class="` + (b_end ? 'disabled' : 'waves-effect') + `"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
@@ -615,20 +761,34 @@
                   g_max = 0;
                   var l;
                   var lang = a_get['lang'].toLocaleLowerCase();
-                  var langs = ['english', 'chinese', 'japanese', 'korean'];
-                  if(a_get['lang'] != 'ALL'){
+                  // test
+                  if(lang == 'test'){
                     for(var i=0;i<g_datas.length;i++){
-                      l = g_datas[i].lang.toLocaleLowerCase();
-                      if(lang == 'other'){
-                        if(langs.indexOf(l) !== -1) continue;
-                      }else{
-                        if(l != lang) continue;
-                      }
-                         g_list.push(g_datas[i]);
-                         g_keys.push(i);
+                        if(g_datas[i].online == undefined){
+                            if(g_datas[i].link.length > 0){
+                                g_list.push(g_datas[i]);
+                                g_keys.push(i);
+                            }else{
+                                console.log(g_datas[i]);
+                            }
+                        }
                     }
                   }else{
-                    g_list = g_datas;
+                    var langs = ['english', 'chinese', 'japanese', 'korean'];
+                    if(lang != 'all'){
+                      for(var i=0;i<g_datas.length;i++){
+                        l = g_datas[i].lang.toLocaleLowerCase();
+                        if(lang == 'other'){
+                          if(langs.indexOf(l) !== -1) continue;
+                        }else{
+                          if(l != lang) continue;
+                        }
+                           g_list.push(g_datas[i]);
+                           g_keys.push(i);
+                      }
+                    }else{
+                      g_list = g_datas;
+                    }
                   }
                   g_max = g_list.length;
                 }
@@ -645,7 +805,7 @@
                     if (start < 0) start = 0;
                     end = start + g_load;
                     if (end > g_max) end = g_max - 1;
-
+                    
                     var h = `
               <div class='_page' style="margin-top: 55px; height: 40px;"></div>
               <table id="table-two-axis" class="two-axis" style="display: none; margin-top: -5px;">
@@ -657,6 +817,7 @@
                     <th>Size</th>
                     <th>Action</th>
                     <th>Backup</th>
+                    <th>...</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -698,8 +859,7 @@
 
                         if (d.online != undefined) {
                             h = h + `<td>` + formatFileSize(d.online.size) + `</td>`;
-                            h = h + `<td class='_action'><a class='read' href="javascript:openNew('https://neysummer2000-location.glitch.me/?id=` + d.online.id + `&title=` + encodeURI(d.title) + `')">readOnline</a>&nbsp;&nbsp;&nbsp;<a class='copy_btn' href="javascript: void(0)" data-clipboard-text="http://pan-yz.chaoxing.com/download/downloadfile?fleid=` + d.online.id + `&puid=142588570">directDownload</a></td>`;
-
+                            h = h + `<td class='_action'><a class='read' href="javascript:openNew('https://neysummer2000-location.glitch.me/?id=` + d.online.id + `&title=` + encodeURI(d.title) + `')">readOnline</a>&nbsp;&nbsp;&nbsp;<a class='copy_btn' href="javascript: openCopyDialog('http://pan-yz.chaoxing.com/download/downloadfile?fleid=` + d.online.id + `&puid=142588570', '`+d.title+`');">directDownload</a></td>`;
                         } else {
                             h = h + `<td></td><td></td>`;
                         }
@@ -721,7 +881,7 @@
                             h = h + '&nbsp;&nbsp;';
                         }
 
-                        h = h + '</td></tr>';
+                        h = h + '</td><td><i class="material-icons">arrow_drop_down</i></td></tr>';
                     }
                     h = h + '</tbody></table>'
                     $('.preloader-wrapper').hide();
@@ -737,25 +897,11 @@
                       'font-size': '20px',
                       'cursor': 'pointer'
                     }).html(a_get['lang']);
-                    initCopyDom('.copy_btn');
                     initPage(page);
                 }
             }
 
             var g_clipboard;
-            function initCopyDom(selecter) {
-                if (g_clipboard != undefined) {
-                    g_clipboard.destroy();
-                }
-                g_clipboard = new Clipboard(selecter);
-                g_clipboard.on('success', function(e) {
-                    e.clearSelection();
-                    alert('Copied The Download URL!');
-                });
-                g_clipboard.on('error', function(e) {
-                    alert($(e.trigger).attr('data-clipboard-text'));
-                });
-            }
 
             function formatFileSize(fileSize) {
                 if (fileSize < 1024) {

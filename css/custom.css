@@ -78,6 +78,10 @@ nav i{
     box-shadow: 0 1px 0 0 red !important;
 }
 
+.collection-item {
+    cursor: pointer;
+}
+
 .star {
     width: 20px;
     height: 20px;

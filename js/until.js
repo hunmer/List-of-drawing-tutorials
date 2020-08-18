@@ -16,9 +16,12 @@ function updateStatus(){
 }
 
 function setLikeCount(max){
+  if(parseInt(getLocalItem('isLiked', 0)) == 1){
+    $('#like_btn span').html(max);
+    return;
+  }
   var s = parseInt($('#like_btn span').html());
-
-  var timer = setInterval(function(){
+   var timer = setInterval(function(){
     if(s < max){
       s++;
     }else{
@@ -74,7 +77,7 @@ function initFavorite(){
       var td = $(el).find('td');
       if(td.length > 2){
          if(td[1].innerText == d.title && td[2].innerText == d.lang){
-          $(el).find('i').html('star');
+          $(el).find('.star').html('star');
         }
       }
     });
