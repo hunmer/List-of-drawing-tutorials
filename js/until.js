@@ -69,7 +69,7 @@ function setLocalItem(key, value) {
 function initFavorite(){
   var html = '';
   var d;
-  var col = parseInt(12 / parseInt($(this).width() / 150));
+  var col = Math.round(12 / parseInt($(this).width() / 200));
   for(var i=0; i<g_favorite.length;i++){
     d = g_favorite[i];
 
@@ -133,7 +133,7 @@ function openDownloadConfirm(title, lang){
       for(var i=0;i<links.length;i++){
         h = h + `<li class="collection-item" `;
         if(links[i].indexOf('pan-yz.chaoxing.com') != -1){
-          h = h + 'data-clipboard-text="'+links[i]+'" ';
+          h = h + `onclick="openCopyDialog('`+links[i]+`')";`;
         }else{
            h = h + `onclick="window.open('`+links[i]+`');"`;
         }

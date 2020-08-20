@@ -98,7 +98,7 @@
                 </a>
             </li>
             <li>
-                <a href="javascript: $('#modal3').html(`<div class='modal-content'><h3>!NOT OFFICAL!</h3><p>This discord is not the official website of<a href='https://yande.re'>yande.re</a>,But you can share your drawings here or you are interested in translating books and so on.</p></div><div class='modal-footer'><a href='https://discord.gg/MPdwzcq'class='modal-close waves-effect waves-red btn-flat'target='_blank'>Join</a><a href='javascript: void(0)'class='modal-close waves-effect waves-red btn-flat'>No,Thanks</a></div></div>`).modal('open');">
+                <a href="javascript: $('#modal3').html(`<div class='modal-content'><h3>!NOT OFFICAL!</h3><p>This discord is not the official website of <a href='https://yande.re'>yande.re</a>,But you can share your drawings here or you are interested in translating books and so on.</p></div><div class='modal-footer'><a href='https://discord.gg/MPdwzcq'class='modal-close waves-effect waves-red btn-flat'target='_blank'>Join</a><a href='javascript: void(0)'class='modal-close waves-effect waves-red btn-flat'>No,Thanks</a></div></div>`).modal('open');">
                     <i class="material-icons">toys</i>
                     discord
                 </a>
@@ -405,16 +405,17 @@
 
 
                 $(document).on('click', '.bt-content i', function(event) {
-                  //if(this.innerText == 'arrow_drop_down'){}
-                  var key = $(this).parents('tr').attr('key');
-                  var h = `<div class="modal-content" key='`+key+`'>
-                       <ul class="collection">
-                      <li class="collection-item" onclick='_dialog_shareBook(`+key+`)'><i class="material-icons right">content_copy</i>Share</li>
-                      </ul>
-                     <div class="modal-footer">
-                      <a href="javascript: void(0)" class="modal-close waves-effect waves-red btn-flat">Cancel</a>
-                      </div></div>`;
-                  $('#modal2').html(h).modal('open');
+                  if(this.innerText == 'arrow_drop_down'){
+                  	var key = $(this).parents('tr').attr('key');
+	                  var h = `<div class="modal-content" key='`+key+`'>
+	                       <ul class="collection">
+	                      <li class="collection-item" onclick='_dialog_shareBook(`+key+`)'><i class="material-icons right">content_copy</i>Share</li>
+	                      </ul>
+	                     <div class="modal-footer">
+	                      <a href="javascript: void(0)" class="modal-close waves-effect waves-red btn-flat">Cancel</a>
+	                      </div></div>`;
+	                  $('#modal2').html(h).modal('open');
+                  }
                 }).
                 on('click', 'tr img', function() {
                     var d = $(this).parent().parent().parent().find('a.read');
